@@ -1,0 +1,59 @@
+<!--{"title": "GST Calculator Australia: Add or Remove 10% GST", "short": "GST calculator", "description": "Add 10% GST to a price or take GST out of a GST-inclusive amount. Shows the GST portion, the ex-GST price and the formulas (divide by 11) so you can check invoices.", "card": "Add 10% GST, or find the GST inside a price (the divide-by-11 rule).", "order": 4}-->
+<h1>GST calculator</h1>
+<p class="lede">Add 10% GST to a price, or work out how much GST is already inside a price.</p>
+
+<div class="calc-card">
+<form class="calc" id="gst">
+  <label>Amount ($)
+    <input type="number" name="amount" value="250" min="0" step="any" inputmode="decimal">
+  </label>
+  <div class="wide">
+    <div class="seg" role="radiogroup" aria-label="Direction">
+      <label><input type="radio" name="mode" value="add" checked> Add GST (price is ex-GST)</label>
+      <label><input type="radio" name="mode" value="remove"> Remove GST (price includes GST)</label>
+    </div>
+  </div>
+</form>
+<div class="result" id="gst-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>The two formulas</h2>
+<div class="callout">
+<p><strong>Adding GST:</strong> price × 1.1. The GST is price × 0.1.</p>
+<p><strong>Finding GST inside a price:</strong> price ÷ 11. The ex-GST price is price ÷ 1.1.</p>
+</div>
+<p>The second one trips people up. Because GST is 10% of the <em>ex-GST</em> price, it is one-eleventh of the GST-inclusive price, not 10% of it. Taking 10% off a $110 bill gives $99, which is wrong: the real ex-GST price is $100 and the GST is $10.</p>
+
+<h2>Examples</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>You have</th><th class="n">GST</th><th class="n">Ex-GST</th><th class="n">Inc-GST</th></tr></thead>
+<tbody>
+<tr><td>$250 quote, plus GST</td><td class="n">$25.00</td><td class="n">$250.00</td><td class="n">$275.00</td></tr>
+<tr><td>$99 receipt, GST included</td><td class="n">$9.00</td><td class="n">$90.00</td><td class="n">$99.00</td></tr>
+<tr><td>$1,650 invoice, GST included</td><td class="n">$150.00</td><td class="n">$1,500.00</td><td class="n">$1,650.00</td></tr>
+</tbody></table></div>
+
+<h2>When GST applies</h2>
+<p>GST is a 10% tax on most goods and services sold in Australia. Businesses must register for GST once their GST turnover reaches $75,000 a year ($150,000 for non-profits), and every taxi and rideshare driver must register regardless of turnover. A business that is not registered cannot charge GST, so a quote "plus GST" from an unregistered supplier is a red flag: ask for their ABN and check it on the ABN Lookup site.</p>
+<p>Some things are GST-free, including most basic food (bread, milk, fresh fruit and vegetables), many health and medical services, most education courses and childcare. Prepared food, snacks and drinks other than plain milk and water generally do include GST, which is why a supermarket receipt often mixes the two.</p>
+
+<h2>Quick tips</h2>
+<ul>
+<li>Advertised prices to consumers in Australia must include GST, so the shelf price is the price you pay.</li>
+<li>Business-to-business quotes are often written "ex GST". Add 10% before comparing them with a consumer price.</li>
+<li>If you are GST-registered, the GST on your business purchases can usually be claimed back as a GST credit on your BAS, so the real cost to the business is the ex-GST amount.</li>
+</ul>
+
+<p class="sources">GST rate and registration thresholds: ATO "Registering for GST". Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("gst", function (v) {
+  var f = Calc.fmt, r = Calc.gst(v.amount || 0, v.mode);
+  return Calc.table([
+    ["GST", f.money(r.gst), true],
+    ["Price excluding GST", f.money(r.exGst)],
+    ["Price including GST", f.money(r.incGst)]
+  ]);
+});
+</script>

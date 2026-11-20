@@ -1,0 +1,58 @@
+<!--{"title": "Compound Interest Savings Calculator Australia", "short": "Savings growth", "description": "See how savings grow with compound interest: starting balance, monthly deposits, interest rate and years, with a year-by-year table and how much is interest.", "card": "How a savings account grows with monthly deposits and compound interest.", "order": 10}-->
+<h1>Compound interest savings calculator</h1>
+<p class="lede">How a starting balance and regular monthly deposits grow when the interest compounds each month.</p>
+
+<div class="calc-card">
+<form class="calc" id="save">
+  <label>Starting balance ($)
+    <input type="number" name="start" value="5000" min="0" step="100" inputmode="decimal">
+  </label>
+  <label>Monthly deposit ($)
+    <input type="number" name="monthly" value="200" min="0" step="10" inputmode="decimal">
+  </label>
+  <label>Interest rate (% a year)
+    <input type="number" name="rate" value="4.5" min="0" max="20" step="0.05" inputmode="decimal">
+  </label>
+  <label>Years
+    <input type="number" name="years" value="10" min="1" max="60" step="1" inputmode="numeric">
+  </label>
+</form>
+<div class="result" id="save-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>The formula</h2>
+<div class="callout">Balance = start × (1 + r)<sup>n</sup> + deposit × ((1 + r)<sup>n</sup> − 1) ÷ r, where r is the yearly rate ÷ 12 and n is the number of months.</div>
+<p>Deposits are assumed to go in at the end of each month and interest is added monthly, which is how most Australian savings accounts work.</p>
+
+<h2>Worked example</h2>
+<p>$5,000 to start, $200 a month, 4.5% a year, for 10 years. You put in $29,000 in total. The balance reaches about <strong>$38,075</strong>, so roughly <strong>$9,075</strong> of it is interest. The interest earned in year 10 alone is about $1,615, nearly six times year 1's $280, because the balance is bigger and each year's interest earns interest too.</p>
+
+<h2>The catches with high-interest savings accounts</h2>
+<ul>
+<li><strong>Bonus rate conditions.</strong> Many accounts only pay the headline rate if you deposit a set amount each month and make no withdrawals. Miss once and you get the much lower base rate for that month.</li>
+<li><strong>Introductory rates.</strong> A rate that drops after 4 months is not a 4-month bonus on a 10-year plan. Compare the ongoing rate.</li>
+<li><strong>Balance caps.</strong> Some bonus rates only apply up to a balance limit, such as $50,000 or $250,000.</li>
+</ul>
+
+<h2>Tax and inflation</h2>
+<p>Interest is taxable income, taxed at your marginal rate. On a 32% marginal rate a 4.5% account really earns about 3.1% after tax. If inflation runs at 3%, that is close to standing still in real terms. Savings accounts are for safety and short-term goals; the Government's Financial Claims Scheme guarantees deposits up to $250,000 per person per bank if an authorised bank fails.</p>
+<p>For money you won't touch for many years, people often compare paying extra into a mortgage offset account (saving interest at the loan rate, with no tax on the saving) or extra super contributions. Which is right depends on your situation; Moneysmart, run by ASIC, has free guides on each.</p>
+
+<script>
+Calc.ui("save", function (v) {
+  var f = Calc.fmt;
+  var r = Calc.compoundSavings(v.start || 0, v.monthly || 0, (v.rate || 0) / 100, Math.min(60, Math.max(1, v.years || 1)));
+  var html = Calc.table([
+    ["Final balance", f.money0(r.total), true],
+    ["You deposit", f.money0(r.contributed)],
+    ["Interest earned", f.money0(r.interest)]
+  ]);
+  var prev = v.start || 0, rows = r.byYear.map(function (bal, i) {
+    var dep = (v.monthly || 0) * 12, interest = bal - prev - dep;
+    prev = bal;
+    return "<tr><td>" + (i + 1) + '</td><td class="n">' + f.money0(interest) + '</td><td class="n">' + f.money0(bal) + "</td></tr>";
+  }).join("");
+  return html + '<details><summary>Year-by-year</summary><div class="table-wrap"><table class="ex"><thead><tr><th>Year</th><th class="n">Interest</th><th class="n">Balance</th></tr></thead><tbody>' + rows + "</tbody></table></div></details>";
+});
+</script>

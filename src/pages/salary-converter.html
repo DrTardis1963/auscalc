@@ -1,0 +1,62 @@
+<!--{"title": "Hourly to Annual Salary Converter (Australia)", "short": "Hourly ↔ salary", "description": "Convert an hourly rate to weekly, fortnightly, monthly and annual pay, or the other way round, using a 38-hour week. Also compares casual and permanent rates with the 25% casual loading.", "card": "Hourly, weekly, fortnightly, monthly and yearly pay, plus casual vs permanent.", "order": 3}-->
+<h1>Hourly to salary converter</h1>
+<p class="lede">Turn an hourly rate into a yearly salary, or a salary into an hourly rate. Australia's standard full-time week is 38 hours.</p>
+
+<div class="calc-card">
+<form class="calc" id="conv">
+  <label>Pay ($)
+    <input type="number" name="amount" value="35" min="0" step="any" inputmode="decimal">
+  </label>
+  <label>Per
+    <select name="period">
+      <option value="hour" selected>Hour</option>
+      <option value="week">Week</option>
+      <option value="fortnight">Fortnight</option>
+      <option value="month">Month</option>
+      <option value="year">Year</option>
+    </select>
+  </label>
+  <label>Hours per week
+    <input type="number" name="hours" value="38" min="1" max="100" step="any" inputmode="decimal">
+  </label>
+  <label class="check wide"><input type="checkbox" name="casual"> This is a casual rate (includes 25% casual loading)</label>
+</form>
+<div class="result" id="conv-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>The conversions</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>From</th><th>To annual pay</th></tr></thead>
+<tbody>
+<tr><td>Hourly</td><td>× hours per week × 52</td></tr>
+<tr><td>Weekly</td><td>× 52</td></tr>
+<tr><td>Fortnightly</td><td>× 26</td></tr>
+<tr><td>Monthly</td><td>× 12</td></tr>
+</tbody></table></div>
+<p>Monthly pay is a yearly figure divided by 12, not four weekly pays. A month averages about 4.33 weeks, so "weekly × 4" understates monthly income by around 8%.</p>
+
+<h2>Worked example: $35 an hour, full time</h2>
+<p>$35 × 38 hours = $1,330 a week. Over 52 weeks that is <strong>$69,160 a year</strong>, or $2,660 a fortnight and $5,763.33 a month, all before tax. Paid annual leave is already counted because permanent staff are paid for all 52 weeks.</p>
+
+<h2>Casual vs permanent</h2>
+<p>Most awards pay casuals a <strong>25% loading</strong> instead of paid annual leave, personal leave and notice. To compare a casual job with a permanent one, divide the casual rate by 1.25. A $40/hour casual rate is equivalent to a $32/hour permanent rate before you account for the leave you won't be paid for.</p>
+<p>Which is better depends on how steady the hours are. A permanent job pays the same in a week you are sick or on holiday; a casual job pays nothing. Four weeks of annual leave plus ten days of personal leave is worth about 13% of a permanent salary, so on paper the 25% loading pays more. Permanent work makes up the gap with steady hours, notice and redundancy rights, which matter most if your casual hours could be cut without warning.</p>
+
+<h2>Checking your rate</h2>
+<p>The national minimum wage and award rates are set by the Fair Work Commission and usually rise on 1 July each year. The Fair Work Ombudsman's Pay Calculator gives the legal minimum for your award, age and classification; if this converter shows you are being paid less, check there first.</p>
+
+<script>
+Calc.ui("conv", function (v) {
+  var f = Calc.fmt, r = Calc.salaryConvert(v.amount || 0, v.period, v.hours);
+  var rows = [
+    ["Per year", f.money(r.annual), true],
+    ["Per month", f.money(r.monthly)],
+    ["Per fortnight", f.money(r.fortnightly)],
+    ["Per week", f.money(r.weekly)],
+    ["Per hour", f.money(r.hourly)]
+  ];
+  if (v.casual) rows.push(["Permanent-equivalent hourly", f.money(Calc.casualToPermanent(r.hourly))]);
+  return Calc.table(rows) + '<p class="note">All figures before tax. See the <a href="/pay-after-tax/">pay after tax calculator</a> for take-home pay.</p>';
+});
+</script>

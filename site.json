@@ -1,0 +1,11 @@
+{
+  "name": "AusCalc",
+  "tagline": "Free Australian cost and pay calculators",
+  "url": "https://calc.primemoverindustries.com",
+  "contact": "hello@primemoverindustries.com",
+  "owner": "Prime Mover Industries",
+  "adsense": {
+    "client": "ca-pub-3886111503622765",
+    "enabled": false
+  }
+}

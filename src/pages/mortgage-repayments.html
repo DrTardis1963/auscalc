@@ -1,0 +1,61 @@
+<!--{"title": "Mortgage Repayment Calculator Australia (Monthly, Fortnightly, Weekly)", "short": "Mortgage repayments", "description": "Work out home loan repayments monthly, fortnightly or weekly, total interest over the loan, interest-only cost, and how much the half-monthly-every-fortnight trick saves.", "card": "Repayments per month, fortnight or week, total interest, and the fortnightly trick.", "order": 2}-->
+<h1>Mortgage repayment calculator</h1>
+<p class="lede">Repayments on a principal-and-interest home loan, the total interest you pay, and how much faster you finish by paying half your monthly repayment every fortnight.</p>
+
+<div class="calc-card">
+<form class="calc" id="loan">
+  <label>Loan amount ($)
+    <input type="number" name="principal" value="600000" min="0" step="1000" inputmode="decimal">
+  </label>
+  <label>Interest rate (% a year)
+    <input type="number" name="rate" value="6" min="0" max="25" step="0.01" inputmode="decimal">
+  </label>
+  <label>Loan term (years)
+    <input type="number" name="years" value="30" min="1" max="40" step="1" inputmode="numeric">
+  </label>
+</form>
+<div class="result" id="loan-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>Worked example: $600,000 at 6% over 30 years</h2>
+<ul>
+<li>Monthly repayment: <strong>$3,597.30</strong>.</li>
+<li>Over 360 months you repay about $1,295,029, so the interest is about <strong>$695,029</strong>, more than the amount borrowed.</li>
+<li>Interest-only for the same loan would be $3,000 a month, but none of that reduces the debt.</li>
+</ul>
+
+<h2>The fortnightly trick</h2>
+<p>A true fortnightly repayment on the same loan is $1,659.50, which works out to almost exactly the same as paying monthly. The saving comes from a different approach: take <em>half</em> your monthly repayment ($1,798.65) and pay it every fortnight. There are 26 fortnights in a year, so you end up making the equivalent of 13 monthly repayments instead of 12.</p>
+<p>In the example above that one extra month a year clears the loan in about <strong>24½ years instead of 30</strong> and saves roughly <strong>$149,000</strong> in interest. Check that your lender calculates interest daily and lets you choose the repayment amount; most Australian variable loans do.</p>
+
+<h2>What moves your repayment the most</h2>
+<ul>
+<li><strong>The rate.</strong> On $600,000 over 30 years, every 0.25% adds or removes roughly $100 a month. Ask your lender for a better rate once a year; refinancing often saves more than any budgeting tip.</li>
+<li><strong>The term.</strong> A 25-year term lifts the monthly repayment but cuts total interest sharply. Stretching to 30 years lowers the repayment but costs far more over time.</li>
+<li><strong>An offset account.</strong> Money sitting in an offset account is subtracted from the loan balance before interest is charged, so $20,000 in offset at 6% saves about $1,200 of interest a year, tax-free.</li>
+</ul>
+
+<h2>Things this calculator does not include</h2>
+<p>Lender fees, lenders mortgage insurance, stamp duty and changes in the interest rate over the life of the loan. Real repayments also vary slightly with how your lender rounds and when it charges interest. Treat the result as a close estimate and use your lender's figure for the actual amount.</p>
+
+<script>
+Calc.ui("loan", function (v) {
+  var f = Calc.fmt;
+  var m = Calc.mortgage(v.principal || 0, (v.rate || 0) / 100, v.years || 1);
+  var yrs = m.accelerated.years;
+  var y = Math.floor(yrs), mo = Math.round((yrs - y) * 12);
+  if (mo === 12) { y += 1; mo = 0; }
+  return Calc.table([
+    ["Monthly repayment", f.money(m.monthly), true],
+    ["Fortnightly repayment", f.money(m.fortnightly)],
+    ["Weekly repayment", f.money(m.weekly)],
+    ["Interest-only (monthly)", f.money(m.interestOnlyMonthly)],
+    ["Total repaid (monthly)", f.money0(m.totalPaid)],
+    ["Total interest", f.money0(m.totalInterest)],
+    ["Half-monthly every fortnight", f.money(m.accelerated.payment)],
+    ["…loan paid off in", isFinite(yrs) ? y + " yrs " + mo + " mths" : "-"],
+    ["…interest saved", f.money0(m.accelerated.interestSaved)]
+  ]);
+});
+</script>

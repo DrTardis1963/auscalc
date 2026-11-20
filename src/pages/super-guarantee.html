@@ -1,0 +1,49 @@
+<!--{"title": "Super Guarantee Calculator 2026-27 (12%)", "short": "Super guarantee", "description": "Work out how much super your employer must pay at the 12% super guarantee rate, per year, month, fortnight and week, and split a salary package that includes super.", "card": "What your employer owes at 12%, and how to split a package that includes super.", "order": 5}-->
+<h1>Super guarantee calculator</h1>
+<p class="lede">How much super your employer has to pay you at the 12% super guarantee rate, and how to split a "package including super" into salary and super.</p>
+
+<div class="calc-card">
+<form class="calc" id="sg">
+  <label>Annual pay ($)
+    <input type="number" name="salary" value="90000" min="0" step="any" inputmode="decimal">
+  </label>
+  <label class="check wide"><input type="checkbox" name="includesSuper"> This figure already includes super (a total package)</label>
+</form>
+<div class="result" id="sg-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>The rate</h2>
+<p>The super guarantee reached its legislated maximum of <strong>12%</strong> on 1 July 2025 and stays at 12% for 2026-27 and later years. It was 11.5% in 2024-25 and 11% in 2023-24.</p>
+<div class="callout">Super = ordinary pay × 12%. If your offer is a package that includes super, your salary is the package ÷ 1.12.</div>
+
+<h2>Worked examples</h2>
+<ul>
+<li><strong>$90,000 salary plus super:</strong> 12% × $90,000 = $10,800 a year, about $415.38 a fortnight. Your total package is $100,800.</li>
+<li><strong>$100,000 package including super:</strong> $100,000 ÷ 1.12 = $89,285.71 salary, and $10,714.29 super. This is about $715 a year less salary than a "$90,000 plus super" offer, so always ask which one a job ad means.</li>
+</ul>
+
+<h2>Payday Super from 1 July 2026</h2>
+<p>Until 30 June 2026 employers could pay super quarterly. From 1 July 2026 the "Payday Super" rules require employers to pay super for each payday, based on each employee's qualifying earnings. That means super should appear in your fund within days of each pay rather than up to four months later. If your payslips show super but your fund balance doesn't move for weeks, ask your employer, and if it isn't fixed, report unpaid super to the ATO.</p>
+
+<h2>What counts as "ordinary pay"</h2>
+<p>Super is worked out on your ordinary earnings: normal wages, most allowances, commissions and shift loadings. It is generally not paid on overtime hours. Casual workers and part-timers get the same 12%, and since July 2022 there is no minimum monthly earnings threshold, so even a small second job attracts super. Under-18s qualify once they work more than 30 hours in a week.</p>
+
+<h2>Why it is worth checking</h2>
+<p>12% compounding for decades is large. On a $90,000 salary, $10,800 a year invested for 30 years at a 6% return grows to roughly $850,000 before fees and tax. Unpaid or late super is one of the most common pay errors in Australia, so compare the figure here against your payslip and your fund statement.</p>
+
+<p class="sources">Rate and Payday Super start date: ATO "Super guarantee" (updated 17 April 2026). Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("sg", function (v) {
+  var f = Calc.fmt, r = Calc.superGuarantee(v.salary || 0, v.includesSuper);
+  return Calc.table([
+    ["Super per year", f.money(r.yearly), true],
+    ["Per month", f.money(r.monthly)],
+    ["Per fortnight", f.money(r.fortnightly)],
+    ["Per week", f.money(r.weekly)],
+    ["Salary (before super)", f.money(r.base)],
+    ["Total package", f.money(r.packageTotal)]
+  ]);
+});
+</script>

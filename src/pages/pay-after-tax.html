@@ -1,0 +1,92 @@
+<!--{"title": "Pay After Tax Calculator 2026-27 (Australia)", "short": "Pay after tax", "description": "Work out your take-home pay in Australia for 2026-27: income tax with the new 15% bottom rate, Medicare levy, low income tax offset and super, per week, fortnight, month and year.", "card": "Take-home pay for 2026-27 with the new 15% rate, Medicare and super.", "order": 1}-->
+<h1>Pay after tax calculator 2026-27</h1>
+<p class="lede">Your take-home pay for the 2026-27 financial year (1 July 2026 to 30 June 2027), using the ATO's resident tax rates, the Medicare levy and the low income tax offset.</p>
+
+<div class="calc-card">
+<form class="calc" id="pay">
+  <label>Your pay <small>before tax</small>
+    <input type="number" name="amount" value="80000" min="0" step="any" inputmode="decimal">
+  </label>
+  <label>Paid per
+    <select name="period">
+      <option value="year" selected>Year</option>
+      <option value="month">Month</option>
+      <option value="fortnight">Fortnight</option>
+      <option value="week">Week</option>
+      <option value="hour">Hour</option>
+    </select>
+  </label>
+  <label>Hours per week <small>only used for hourly pay</small>
+    <input type="number" name="hours" value="38" min="1" max="100" step="any" inputmode="decimal">
+  </label>
+  <label class="check wide"><input type="checkbox" name="includesSuper"> My pay figure includes super (a "package")</label>
+</form>
+<div class="result" id="pay-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>How the 2026-27 tax is worked out</h2>
+<p>From 1 July 2026 the tax rate on income between $18,201 and $45,000 dropped from 16% to 15%. The other brackets are unchanged. For an Australian resident who claims the tax-free threshold:</p>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Taxable income</th><th>Tax on this income</th></tr></thead>
+<tbody>
+<tr><td>$0 – $18,200</td><td>Nil</td></tr>
+<tr><td>$18,201 – $45,000</td><td>15c for each $1 over $18,200</td></tr>
+<tr><td>$45,001 – $135,000</td><td>$4,020 plus 30c for each $1 over $45,000</td></tr>
+<tr><td>$135,001 – $190,000</td><td>$31,020 plus 37c for each $1 over $135,000</td></tr>
+<tr><td>$190,001 and over</td><td>$51,370 plus 45c for each $1 over $190,000</td></tr>
+</tbody></table></div>
+<p>Two more things change the final number:</p>
+<ul>
+<li><strong>Low income tax offset (LITO).</strong> Up to $700 off your tax if you earn $37,500 or less. It shrinks by 5c for each dollar above $37,500, then by 1.5c per dollar above $45,000, and is gone at $66,667. It can cut your tax to zero but is never paid out as cash.</li>
+<li><strong>Medicare levy.</strong> 2% of taxable income. Low earners pay less: nothing at or below $28,011, then 10c for each dollar above that until the full 2% applies (the thresholds shown are the latest the ATO has published, for 2025-26; they usually rise a little each year).</li>
+</ul>
+
+<h2>Worked example: $80,000 a year</h2>
+<ol>
+<li>Income tax: $4,020 + 30% × ($80,000 − $45,000) = $4,020 + $10,500 = <strong>$14,520</strong>.</li>
+<li>LITO: none, because $80,000 is above $66,667.</li>
+<li>Medicare levy: 2% × $80,000 = <strong>$1,600</strong>.</li>
+<li>Take-home: $80,000 − $14,520 − $1,600 = <strong>$63,880 a year</strong>, or about $2,456.92 a fortnight.</li>
+</ol>
+<p>Your employer also pays 12% super on top: $9,600 a year that goes into your super fund, not your bank account.</p>
+
+<h2>Worked example: $35,000 a year</h2>
+<p>This one shows both low-income breaks at work. Income tax is 15% × $16,800 = $2,520. The full $700 LITO brings that to $1,820. The Medicare levy is in its phase-in range, so it is 10% × ($35,000 − $28,011) = $698.90 instead of the full $700. Total tax $2,518.90, take-home <strong>$32,481.10</strong>. That is an average tax rate of about 7.2%.</p>
+
+<h2>Marginal rate vs average rate</h2>
+<p>Your <em>average</em> rate is total tax divided by income. Your <em>marginal</em> rate is what you keep from your next dollar, which matters for overtime, a pay rise or a side job. At $80,000 the marginal rate is 32% (30% tax + 2% Medicare): a $1,000 bonus leaves $680 in your pocket. Between $37,500 and $45,000 the shrinking LITO adds an extra 5c per dollar, so earners there lose more of each extra dollar than the 15% headline rate suggests.</p>
+
+<h2>What this calculator leaves out</h2>
+<ul>
+<li>HELP/HECS study loan repayments.</li>
+<li>The Medicare levy surcharge (for higher earners without private hospital cover).</li>
+<li>Deductions, salary sacrifice, other tax offsets and family-income Medicare reductions.</li>
+<li>Non-residents and working holiday makers, who pay different rates.</li>
+</ul>
+<p>Your employer's PAYG withholding each payday can differ by a few dollars from the yearly figure; the difference comes back (or is owed) when you lodge your tax return.</p>
+
+<p class="sources">Rates from the ATO pages "Tax rates – Australian resident" (2026-27), "Low income tax offset", "Medicare levy reduction for low-income earners" and "Super guarantee". Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("pay", function (v) {
+  var f = Calc.fmt;
+  var annual = Calc.salaryConvert(v.amount || 0, v.period, v.hours).annual;
+  var r = Calc.payAfterTax(annual, { includesSuper: v.includesSuper });
+  var rows = [
+    ["Take-home per year", f.money(r.net), true],
+    ["Per month", f.money(r.net / 12)],
+    ["Per fortnight", f.money(r.net / 26)],
+    ["Per week", f.money(r.net / 52)],
+    ["Taxable pay (before super)", f.money(r.gross)],
+    ["Income tax", f.money(r.incomeTax)],
+    ["Low income tax offset", r.lito ? "−" + f.money(r.lito) : f.money(0)],
+    ["Medicare levy", f.money(r.medicare)],
+    ["Total tax", f.money(r.totalTax)],
+    ["Average tax rate", f.pct(r.effectiveRate)],
+    ["Marginal rate (next $1)", f.pct(r.marginalRate)],
+    ["Employer super (12%)", f.money(r.super)]
+  ];
+  return Calc.table(rows);
+});
+</script>

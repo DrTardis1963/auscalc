@@ -1,0 +1,85 @@
+<!--{"title": "Solar Panel Payback Calculator Australia (by City)", "short": "Solar payback", "description": "Estimate how many years rooftop solar takes to pay for itself in your capital city: system size, cost after rebate, how much you use yourself, your electricity rate and feed-in tariff.", "card": "Years for rooftop solar to pay for itself, by capital city.", "order": 9}-->
+<h1>Solar payback calculator</h1>
+<p class="lede">How long a rooftop solar system takes to pay for itself, using typical output for your capital city.</p>
+
+<div class="calc-card">
+<form class="calc" id="solar">
+  <label>System size (kW)
+    <input type="number" name="kw" value="6.6" min="0" step="0.1" inputmode="decimal">
+  </label>
+  <label>Cost after rebate ($) <small>the quote price you actually pay</small>
+    <input type="number" name="cost" value="5500" min="0" step="100" inputmode="decimal">
+  </label>
+  <label>City
+    <select name="city">
+      <option>Adelaide</option>
+      <option selected>Brisbane</option>
+      <option>Canberra</option>
+      <option>Darwin</option>
+      <option>Hobart</option>
+      <option>Melbourne</option>
+      <option>Perth</option>
+      <option>Sydney</option>
+    </select>
+  </label>
+  <label>Share you use yourself (%) <small>30-50% is typical without a battery</small>
+    <input type="number" name="selfUse" value="40" min="0" max="100" step="1" inputmode="numeric">
+  </label>
+  <label>Your electricity rate (c/kWh)
+    <input type="number" name="tariff" value="32" min="0" step="0.1" inputmode="decimal">
+  </label>
+  <label>Feed-in tariff (c/kWh) <small>what your retailer pays for exports</small>
+    <input type="number" name="feedIn" value="5" min="0" step="0.1" inputmode="decimal">
+  </label>
+</form>
+<div class="result" id="solar-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>How the estimate works</h2>
+<ol>
+<li><strong>Yearly output</strong> = system kW × average daily yield for your city × 365.</li>
+<li>The share you use yourself saves you your full electricity rate.</li>
+<li>The rest is exported and earns the feed-in tariff.</li>
+<li><strong>Payback</strong> = system cost ÷ yearly saving.</li>
+</ol>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>City</th><th class="n">Typical yield (kWh per kW per day)</th></tr></thead>
+<tbody>
+<tr><td>Darwin, Perth</td><td class="n">4.4</td></tr>
+<tr><td>Canberra</td><td class="n">4.3</td></tr>
+<tr><td>Adelaide, Brisbane</td><td class="n">4.2</td></tr>
+<tr><td>Sydney</td><td class="n">3.9</td></tr>
+<tr><td>Melbourne</td><td class="n">3.6</td></tr>
+<tr><td>Hobart</td><td class="n">3.5</td></tr>
+</tbody></table></div>
+<p class="note">Yearly averages for well-placed, unshaded north-facing panels, as commonly used by installers. East/west roofs produce roughly 10-15% less; shade can cut output a lot more.</p>
+
+<h2>Worked example: 6.6 kW in Brisbane</h2>
+<p>6.6 kW × 4.2 × 365 = about <strong>10,118 kWh a year</strong>. Using 40% of it at home (4,047 kWh) avoids buying power at 32c, saving $1,295. Exporting the other 6,071 kWh at 5c earns $304. Total saving: about <strong>$1,599 a year</strong>, so a $5,500 system pays for itself in roughly <strong>3½ years</strong>.</p>
+
+<h2>Self-use matters more than the feed-in tariff</h2>
+<p>Every kWh you use yourself is worth your full electricity rate, often six times what an export earns. Moving loads into the sunny part of the day lifts your savings without spending anything: run the dishwasher, washing machine, pool pump and hot water timer between about 10am and 3pm, and pre-cool or pre-heat the house with the air conditioner in the early afternoon. A battery does the same thing automatically, but at current prices it usually lengthens the payback period of the whole system.</p>
+
+<h2>Before you sign a quote</h2>
+<ul>
+<li>The price on most quotes already has the federal small-scale (STC) rebate taken off. That rebate steps down each year until it ends in 2030, so the same system gets slightly dearer each January.</li>
+<li>Use an installer accredited by Solar Accreditation Australia, and ask for the panel and inverter brands and warranties in writing.</li>
+<li>Inverters often need replacing after about 10-12 years. Budget for one replacement over the life of the panels.</li>
+</ul>
+
+<script>
+Calc.ui("solar", function (v) {
+  var f = Calc.fmt;
+  var y = Calc.SOLAR_YIELD[v.city] || 4;
+  var r = Calc.solarPayback(v.kw || 0, v.cost || 0, y, Math.min(100, Math.max(0, v.selfUse || 0)), v.tariff || 0, v.feedIn || 0);
+  return Calc.table([
+    ["Payback period", isFinite(r.paybackYears) ? f.num(Math.round(r.paybackYears * 10) / 10) + " years" : "-", true],
+    ["Saving per year", f.money0(r.savingPerYear)],
+    ["Yearly output", f.num(r.generation) + " kWh"],
+    ["Used at home", f.num(r.selfUsed) + " kWh (" + f.money0(r.savingSelf) + ")"],
+    ["Exported", f.num(r.exported) + " kWh (" + f.money0(r.savingExport) + ")"],
+    ["Saving over 20 years", f.money0(r.savingPerYear * 20)]
+  ]);
+});
+</script>

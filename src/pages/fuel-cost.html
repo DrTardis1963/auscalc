@@ -1,0 +1,55 @@
+<!--{"title": "Trip Fuel Cost Calculator Australia (Split Between Passengers)", "short": "Trip fuel cost", "description": "Work out the fuel cost of a road trip from distance, your car's L/100km and the petrol price, for one way or return, and split it between passengers.", "card": "Fuel cost of a road trip, one way or return, split between passengers.", "order": 6}-->
+<h1>Trip fuel cost calculator</h1>
+<p class="lede">What a drive will cost in fuel, and each person's share if you split it.</p>
+
+<div class="calc-card">
+<form class="calc" id="trip">
+  <label>Distance one way (km)
+    <input type="number" name="km" value="880" min="0" step="any" inputmode="decimal">
+  </label>
+  <label>Fuel use (L/100km) <small>on your car's sticker or trip computer</small>
+    <input type="number" name="lper100" value="7.5" min="0" step="0.1" inputmode="decimal">
+  </label>
+  <label>Fuel price ($ per litre)
+    <input type="number" name="price" value="2.00" min="0" step="0.01" inputmode="decimal">
+  </label>
+  <label>People sharing the cost
+    <input type="number" name="people" value="3" min="1" max="12" step="1" inputmode="numeric">
+  </label>
+  <label class="check wide"><input type="checkbox" name="returnTrip" checked> Return trip</label>
+</form>
+<div class="result" id="trip-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>The formula</h2>
+<div class="callout">Litres = distance × L/100km ÷ 100. Cost = litres × price per litre.</div>
+
+<h2>Worked example: Melbourne to Sydney and back</h2>
+<p>The Hume Highway route is about 880 km each way. In a car using 7.5 L/100km, the return trip of 1,760 km burns 1,760 × 7.5 ÷ 100 = <strong>132 litres</strong>. At $2.00 a litre that is <strong>$264</strong>, or $88 each for three people. Return flights for three people usually cost a good deal more, which is why driving often wins for groups (if you have the time).</p>
+
+<h2>Getting a realistic L/100km figure</h2>
+<ul>
+<li>The official figure on your car's windscreen sticker comes from a lab test. Real-world use is commonly 10-20% higher.</li>
+<li>Highway driving at a steady 100-110 km/h is usually close to the sticker's "extra-urban" number. City driving is much worse.</li>
+<li>A loaded roof rack, a trailer or a caravan can add 20-50% or more. If you tow, use your trip computer's figure from a previous towing trip.</li>
+<li>The most accurate method: fill the tank, reset the trip meter, drive, refill, then divide litres added by kilometres driven and multiply by 100.</li>
+</ul>
+
+<h2>Paying less for fuel</h2>
+<p>Petrol prices in the capital cities move in a regular cycle, often swinging 30-40 cents a litre over a few weeks. Filling up at the bottom of the cycle saves more than most other tricks. Most states have free price-checking apps (for example NSW FuelCheck and WA FuelWatch), and the ACCC publishes where each city sits in its cycle. On a long trip, country prices are often higher than city prices, so fill up before you leave town.</p>
+
+<h2>Splitting costs fairly</h2>
+<p>Fuel is only part of what a car trip costs the owner. Tyres, servicing and depreciation add up too, which is why the ATO's cents-per-kilometre rate for work travel (88 cents per km for 2024-25) is far above the cost of fuel alone. If one person is lending the car for a long trip, offering a little more than the fuel share is a fair gesture.</p>
+
+<script>
+Calc.ui("trip", function (v) {
+  var f = Calc.fmt, r = Calc.fuelTrip(v.km || 0, v.lper100 || 0, v.price || 0, v.returnTrip, v.people || 1);
+  return Calc.table([
+    ["Fuel cost", f.money(r.cost), true],
+    ["Each person pays", f.money(r.perPerson)],
+    ["Fuel used", f.num(r.litres) + " L"],
+    ["Total distance", f.num(r.distance) + " km"]
+  ]);
+});
+</script>
