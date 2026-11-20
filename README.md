@@ -35,6 +35,10 @@ py -m http.server 8064 --directory dist
 
 1. Update `RATES` in `formulas.js` from the ATO pages named in each page's sources line.
 2. Update worked examples and the "checked" dates; `node tests/check.js` must pass.
+3. Car stamp duty (`CAR_DUTY`, pages `car-stamp-duty-*.html`): re-read each state's revenue office
+   page named in its sources line. Dates to watch: VIC changes rates each 1 July; the ACT moves to
+   new rates on 1 February 2027 (the calculator offers both until then; afterwards drop the 2025
+   table); the NT EV concession ends 30 June 2027 unless extended.
 
 ## Going live
 

@@ -1,0 +1,79 @@
+<!--{"title": "TAS Car Stamp Duty Calculator (Motor Vehicle Duty)", "description": "Tasmanian motor vehicle duty: 3% up to $35,000, an 11% step between $35,000 and $40,000, then 4% of the whole value. Utes, motorcycles and fleet-discount cars too, with worked examples.", "state": "TAS", "app": true, "order": 6}-->
+<h1>Tasmania car stamp duty calculator</h1>
+<p class="lede">Motor vehicle duty, set by the State Revenue Office of Tasmania and paid at Service Tasmania when you register a vehicle or transfer its registration.</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Dutiable value <small>price paid incl. trade-in, or market value if higher</small>
+    <input type="number" name="value" value="38000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Vehicle type
+    <select name="type">
+      <option value="passenger" selected>Passenger car, SUV or 4WD wagon</option>
+      <option value="other">Ute, panel van, bus or motorcycle</option>
+      <option value="fleet">New, bought with a manufacturer's fleet discount</option>
+    </select>
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>Tasmanian motor vehicle duty rates</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Passenger vehicle value</th><th>Duty</th></tr></thead>
+<tbody>
+<tr><td>$0 to $600</td><td>$20</td></tr>
+<tr><td>$600 to $35,000</td><td>$3 per $100</td></tr>
+<tr><td>$35,000 to $40,000</td><td>$1,050 plus $11 per $100 over $35,000</td></tr>
+<tr><td>Over $40,000</td><td>$4 per $100 of the whole value</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Other light vehicles</th><th>Duty</th></tr></thead>
+<tbody>
+<tr><td>Utes, panel vans, buses up to 4.5 t, motorcycles</td><td>$3 per $100, minimum $20</td></tr>
+<tr><td>New vehicle with a manufacturer's fleet discount (any type except heavy)</td><td>$3.50 per $100, minimum $20</td></tr>
+</tbody></table></div>
+<p>All rates are per $100 or part of $100. A passenger vehicle carries up to 9 adults, including off-road vehicles without a ute body. Utes, panel vans, motorcycles and vehicles seating more than 9 are "other" vehicles.</p>
+
+<h2>The $35,000 to $40,000 step</h2>
+<p>Tasmania moves from 3% to 4% by charging 11% on the slice between $35,000 and $40,000. By $40,000 the duty has caught up with 4% of the whole value, and from there it is a flat 4%. So each extra $1,000 on a car in that range costs <strong>$110</strong> in duty, against $30 below it and $40 above.</p>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Passenger car value</th><th>Working</th><th class="n">Duty</th></tr></thead>
+<tbody>
+<tr><td>$35,000</td><td>350 × $3</td><td class="n">$1,050</td></tr>
+<tr><td>$38,000</td><td>$1,050 + 30 × $11</td><td class="n">$1,380</td></tr>
+<tr><td>$40,000</td><td>$1,050 + 50 × $11</td><td class="n">$1,600</td></tr>
+<tr><td>$50,000</td><td>500 × $4</td><td class="n">$2,000</td></tr>
+</tbody></table></div>
+<p>A $50,000 ute pays 500 × $3 = <strong>$1,500</strong>, and a $40,000 car bought new with a fleet discount pays 400 × $3.50 = <strong>$1,400</strong>.</p>
+
+<h2>What value is the duty charged on?</h2>
+<ul>
+<li><strong>New car:</strong> the purchase price, including the value of any trade-in, accessories and after-market treatments fitted before delivery, dealer delivery, GST and luxury car tax.</li>
+<li><strong>Used car:</strong> the greatest of the price paid (including trade-ins), the market value when you acquired it, and the market value when you apply to register.</li>
+<li><strong>Bought at auction:</strong> the total paid to the auction house, including the buyer's premium, card fees and delivery.</li>
+</ul>
+
+<h2>Electric and hybrid cars</h2>
+<p>Tasmania exempted new and second-hand electric and hydrogen fuel-cell vehicles registered between 1 July 2021 and 30 June 2023, and new ones contracted before 25 May 2023 and registered by 31 December 2023. That has ended: an EV registered now pays the normal rates. Hybrids pay the normal rates too.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Registration fees and the motor accident insurance premium. The certificate for that premium carries its own $20 duty.</li>
+<li>Exemptions, exemption certificates and the separate rules for motor vehicle dealers and traders.</li>
+<li>Heavy vehicles over 4.5 tonnes: $1 per $100, minimum $20.</li>
+<li>Deadlines: the seller lodges a disposal notice within 7 days, and the buyer applies to transfer within 14 days.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: State Revenue Office Tasmania, <a href="https://www.sro.tas.gov.au/motor-vehicle-duty/rates-of-duty">Rates of duty</a> (published 28 May 2026), <a href="https://www.sro.tas.gov.au/motor-vehicle-duty/dutiable-value">Dutiable value</a> and <a href="https://www.sro.tas.gov.au/motor-vehicle-duty">Motor Vehicle Duty</a>. Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("TAS", v.value, { type: v.type });
+});
+</script>

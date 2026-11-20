@@ -24,6 +24,16 @@
     }).join("") + "</dl>";
   };
 
+  // Result box for the car stamp duty pages. extra: more [label, value] rows.
+  Calc.dutyResult = function (state, value, opts, extra) {
+    var r = Calc.carDuty(state, value || 0, opts);
+    return Calc.table([
+      ["Stamp duty", Calc.fmt.money(r.duty), true],
+      ["Share of the car's value", Calc.fmt.pct(r.effectiveRate, 2)],
+      ["Rate used", r.how]
+    ].concat(extra || []));
+  };
+
   Calc.ui = function (formId, render) {
     var form = document.getElementById(formId);
     var out = document.getElementById(formId + "-out");

@@ -245,8 +245,110 @@
     return { total: round2(fv), contributed: round2(contributed), interest: round2(fv - contributed), byYear: series };
   }
 
+  // ---- Stamp duty on a car, by state -------------------------------------
+  // Rates read from each revenue office on CAR_DUTY.checked; the pages name the URLs.
+  // "Per $100 or part" means a part-$100 counts as a whole $100.
+  var CAR_DUTY = {
+    checked: "21 November 2026",
+    // VIC: per $200 or part, one rate on the whole value (from 1 July 2026)
+    vicBands: [{ upTo: 80809, rate: 8.40 }, { upTo: 100000, rate: 10.40 }, { upTo: 150000, rate: 14.00 }, { upTo: Infinity, rate: 18.00 }],
+    vic: { green: 8.40, primary: 8.40, otherNew: 5.40, otherUsed: 8.40 },
+    // QLD light vehicles: [$ per $100 up to $100,000, $ per $100 above], on the whole value
+    qld: { ev: [2, 4], c4: [3, 5], c6: [3.5, 5.5], c8: [4, 6] },
+    // ACT passenger and light commercial: [$ per $100 under $45,000, $ per $100 from $45,000 to $80,000];
+    // $8 per $100 above $80,000 in every category. Used vehicles: AAA, or the "all other" row.
+    act: {
+      "2025": { AAA: [2.50, 4.00], AA: [2.67, 4.41], A: [2.84, 4.81], B: [3.00, 5.22], C: [3.17, 5.62], D: [4.53, 7.81], NR: [3.17, 5.62], usedOther: [3.17, 5.62] },
+      "2027": { AAA: [2.50, 4.00], AA: [2.67, 4.41], A: [2.84, 4.81], B: [3.25, 5.59], C: [3.72, 6.44], D: [4.83, 8.00], NR: [3.72, 6.44], usedOther: [3.72, 6.44] },
+      top: 8.00
+    },
+    ntEvFreeUpTo: 50000
+  };
+
+  // Number of whole units in a value, counting a part unit as whole.
+  function units(x, unit) {
+    x = Math.round(x * 100) / 100;
+    return x > 0 ? Math.ceil(x / unit - 1e-9) : 0;
+  }
+
+  var carDutyByState = {
+    // o.type: "passenger" | "other" (utes, vans, motorcycles)
+    NSW: function (v, o) {
+      if (o.type === "other" || v < 45000) return { duty: 3 * units(v, 100), how: "$3 per $100" };
+      return { duty: 1350 + 5 * units(v - 45000, 100), how: "$1,350 + $5 per $100 over $45,000" };
+    },
+    // o.type: "passenger" | "green" | "primary" | "otherNew" | "otherUsed"
+    VIC: function (v, o) {
+      var rate, how;
+      if (o.type && o.type !== "passenger") {
+        rate = CAR_DUTY.vic[o.type];
+        how = "$" + rate.toFixed(2) + " per $200";
+      } else {
+        var b = CAR_DUTY.vicBands;
+        for (var i = 0; i < b.length; i++) if (v <= b[i].upTo) { rate = b[i].rate; break; }
+        how = "$" + rate.toFixed(2) + " per $200 on the whole value";
+      }
+      return { duty: round2(rate * units(v, 200)), how: how };
+    },
+    // o.engine: "ev" (hybrid or electric) | "c4" | "c6" | "c8"
+    QLD: function (v, o) {
+      var r = CAR_DUTY.qld[o.engine || "c4"], high = v > 100000, rate = high ? r[1] : r[0];
+      return { duty: round2(rate * units(v, 100)), how: "$" + rate.toFixed(2) + " per $100 on the whole value" };
+    },
+    // o.type: "passenger" (non-commercial) | "other" (commercial: utes, vans)
+    SA: function (v, o) {
+      var com = o.type === "other";
+      if (v <= 1000) return { duty: Math.max(5, units(v, 100)), how: "$1 per $100, minimum $5" };
+      if (v <= 2000) return { duty: 10 + 2 * units(v - 1000, 100), how: "$10 + $2 per $100 over $1,000" };
+      if (com || v <= 3000) return { duty: 30 + 3 * units(v - 2000, 100), how: "$30 + $3 per $100 over $2,000" };
+      return { duty: 60 + 4 * units(v - 3000, 100), how: "$60 + $4 per $100 over $3,000" };
+    },
+    WA: function (v) {
+      var pct;
+      if (v <= 25000) pct = 2.75;
+      else if (v <= 50000) pct = Math.round((2.75 + (v - 25000) / 6666.66) * 100) / 100;
+      else pct = 6.5;
+      return { duty: round2(v * pct / 100), how: pct.toFixed(2) + "% of the whole value" };
+    },
+    // o.type: "passenger" | "other" (utes, vans, motorcycles) | "fleet" (new, manufacturer fleet discount)
+    TAS: function (v, o) {
+      if (o.type === "other") return { duty: Math.max(20, 3 * units(v, 100)), how: "$3 per $100, minimum $20" };
+      if (o.type === "fleet") return { duty: round2(Math.max(20, 3.5 * units(v, 100))), how: "$3.50 per $100, minimum $20" };
+      if (v <= 600) return { duty: 20, how: "flat $20" };
+      if (v <= 35000) return { duty: 3 * units(v, 100), how: "$3 per $100" };
+      if (v <= 40000) return { duty: 1050 + 11 * units(v - 35000, 100), how: "$1,050 + $11 per $100 over $35,000" };
+      return { duty: 4 * units(v, 100), how: "$4 per $100 on the whole value" };
+    },
+    // o.period: "2025" (to 31 Jan 2027) | "2027" (from 1 Feb 2027); o.isNew; o.cat: AAA AA A B C D NR
+    ACT: function (v, o) {
+      var t = CAR_DUTY.act[o.period || "2025"];
+      var cat = o.isNew ? (o.cat || "C") : (o.cat === "AAA" ? "AAA" : "usedOther");
+      var r = t[cat];
+      var base45 = round2(450 * r[0]), base80 = round2(base45 + 350 * r[1]);
+      var $ = function (x) { return "$" + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); };
+      if (v < 45000) return { duty: round2(r[0] * units(v, 100)), how: $(r[0]) + " per $100" };
+      if (v <= 80000) return { duty: round2(base45 + r[1] * units(v - 45000, 100)), how: $(base45) + " + " + $(r[1]) + " per $100 over $45,000" };
+      return { duty: round2(base80 + CAR_DUTY.act.top * units(v - 80000, 100)), how: $(base80) + " + $8.00 per $100 over $80,000" };
+    },
+    // o.ev: battery electric or plug-in hybrid (concession to 30 June 2027)
+    NT: function (v, o) {
+      if (o.ev) {
+        var over = Math.max(0, v - CAR_DUTY.ntEvFreeUpTo);
+        return { duty: 3 * units(over, 100), how: "EV concession: $3 per $100 over $50,000" };
+      }
+      return { duty: 3 * units(v, 100), how: "$3 per $100" };
+    }
+  };
+
+  // Stamp duty on registering or transferring a light vehicle in `state`.
+  function carDuty(state, value, opts) {
+    var v = value > 0 ? value : 0;
+    var r = carDutyByState[state](v, opts || {});
+    return { duty: round2(r.duty), how: r.how, effectiveRate: v > 0 ? r.duty / v : 0 };
+  }
+
   var api = {
-    RATES: RATES, SOLAR_YIELD: SOLAR_YIELD,
+    RATES: RATES, SOLAR_YIELD: SOLAR_YIELD, CAR_DUTY: CAR_DUTY, carDuty: carDuty,
     incomeTax: incomeTax, lito: lito, medicareLevy: medicareLevy, payAfterTax: payAfterTax,
     marginalRate: marginalRate, gst: gst, repayment: repayment, mortgage: mortgage,
     superGuarantee: superGuarantee, salaryConvert: salaryConvert, casualToPermanent: casualToPermanent,

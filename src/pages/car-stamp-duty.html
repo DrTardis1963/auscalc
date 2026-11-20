@@ -1,0 +1,88 @@
+<!--{"title": "Car Stamp Duty Calculator: Every Australian State Compared", "short": "Car stamp duty", "description": "Stamp duty on a new or used car in every Australian state and territory, side by side: NSW, VIC, QLD, SA, WA, TAS, ACT and NT, including the electric and hybrid discounts. Rates checked November 2026.", "card": "Stamp duty on a new or used car in all 8 states and territories, with EV and hybrid rules.", "order": 9}-->
+<h1>Car stamp duty calculator: all states</h1>
+<p class="lede">Enter the car's price to see the stamp duty in every state and territory at once. Each state has its own page with its full rate table and its own options.</p>
+
+<div class="calc-card">
+<form class="calc" id="hub">
+  <label>Car price or market value <small>including GST</small>
+    <input type="number" name="value" value="50000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Fuel
+    <select name="fuel">
+      <option value="petrol" selected>Petrol or diesel</option>
+      <option value="hybrid">Hybrid (not plug-in)</option>
+      <option value="phev">Plug-in hybrid</option>
+      <option value="ev">Fully electric</option>
+    </select>
+  </label>
+  <div class="wide seg" role="radiogroup" aria-label="New or used">
+    <label><input type="radio" name="age" value="new" checked> New</label>
+    <label><input type="radio" name="age" value="used"> Used</label>
+  </div>
+</form>
+<div class="result" id="hub-out" aria-live="polite"></div>
+<p class="note">For a car, SUV or 4WD (not a ute or van). Queensland is worked out for a 4-cylinder engine, and hybrids are assumed to emit 120 g/km of CO2 or less, as most do. The state pages let you change these.</p>
+</div>
+{{ad}}
+
+<h2>Pick your state</h2>
+<p>You pay duty to the state or territory where the car is registered, so use the state on your registration, not the state where you bought it.</p>
+{{duty_states}}
+
+<h2>Side by side: what the same car costs in duty</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>State</th><th class="n">New petrol car, $50,000</th><th class="n">New EV, $50,000</th><th class="n">Used petrol car, $20,000</th></tr></thead>
+<tbody>
+<tr><td><a href="/car-stamp-duty-nsw/">NSW</a></td><td class="n">$1,600</td><td class="n">$1,600</td><td class="n">$600</td></tr>
+<tr><td><a href="/car-stamp-duty-vic/">VIC</a></td><td class="n">$2,100</td><td class="n">$2,100</td><td class="n">$840</td></tr>
+<tr><td><a href="/car-stamp-duty-qld/">QLD</a></td><td class="n">$1,500</td><td class="n">$1,000</td><td class="n">$600</td></tr>
+<tr><td><a href="/car-stamp-duty-sa/">SA</a></td><td class="n">$1,940</td><td class="n">$1,940</td><td class="n">$740</td></tr>
+<tr><td><a href="/car-stamp-duty-wa/">WA</a></td><td class="n">$3,250</td><td class="n">$3,250</td><td class="n">$550</td></tr>
+<tr><td><a href="/car-stamp-duty-tas/">TAS</a></td><td class="n">$2,000</td><td class="n">$2,000</td><td class="n">$600</td></tr>
+<tr><td><a href="/car-stamp-duty-act/">ACT</a></td><td class="n">$1,611</td><td class="n">$1,325</td><td class="n">$634</td></tr>
+<tr><td><a href="/car-stamp-duty-nt/">NT</a></td><td class="n">$1,500</td><td class="n">$0</td><td class="n">$600</td></tr>
+</tbody></table></div>
+<p>Queensland is for a 4-cylinder car. The ACT petrol figure is for a new car in emissions category B (131 to 175 g/km), registered before 1 February 2027. In Victoria an EV pays the same $2,100 because at $50,000 the "green car" rate and the normal rate are both $8.40 per $200; the green rate only saves money above $80,809.</p>
+<p>A $50,000 car costs more than twice as much in duty in Western Australia as in the Northern Territory, and a buyer in Darwin pays nothing on a $50,000 EV until June 2027.</p>
+
+<h2>Why the states give different answers</h2>
+<ul>
+<li><strong>Step or slab.</strong> NSW, South Australia and the ACT charge their higher rate only on the part of the price above a threshold, so the duty climbs smoothly. Victoria, Queensland, Western Australia and part of Tasmania's scale apply one rate to the whole price, so crossing a threshold by a dollar can add hundreds.</li>
+<li><strong>Per $100 or part.</strong> Most states count every started $100 (Victoria: every started $200) as a whole one. A $30,050 car is taxed as if it cost $30,100.</li>
+<li><strong>What counts as the value.</strong> For a used car most states use the price you paid or the market value, whichever is higher, so a cheap sale to a friend does not cut the duty. For a new car, Queensland and Western Australia use the manufacturer's list price, not your discounted deal.</li>
+<li><strong>Engine and emissions.</strong> Queensland charges by cylinders and gives hybrids and EVs a lower rate. The ACT charges by CO2 emissions per kilometre. Victoria has one green-car rate. The NT has an EV concession until 30 June 2027. NSW and Tasmania no longer give EVs a break.</li>
+<li><strong>Utes and vans.</strong> Most states treat goods vehicles as commercial and charge less on dearer ones: no 5% tier in NSW, 3% rather than 4% in South Australia, a flat rate in Tasmania, and a cheaper new-vehicle rate in Victoria.</li>
+</ul>
+
+<h2>What this leaves out</h2>
+<ul>
+<li><strong>Registration, CTP insurance and transfer fees.</strong> These are separate charges, paid at the same time. Dealer "drive-away" prices usually include them along with the duty.</li>
+<li><strong>Luxury car tax.</strong> That is a federal tax already inside the price of an expensive new car. It is not stamp duty, but most states charge duty on a price that includes it.</li>
+<li><strong>Exemptions.</strong> Transfers between spouses, deceased estates, some disability and veteran vehicles and moving a car you already own from another state are often exempt. Each state page lists where to check.</li>
+<li><strong>Heavy vehicles, motorcycles, caravans and trailers.</strong> These have their own rates and are not covered here.</li>
+</ul>
+
+<p class="sources">Sources: each state's revenue office (Revenue NSW, SRO Victoria, Queensland Government, RevenueSA, WA Department of Treasury and Finance, SRO Tasmania, ACT Revenue Office, NT Territory Revenue Office). Links are on each state page. Rates checked 21 November 2026.</p>
+
+<script>
+Calc.ui("hub", function (v) {
+  var f = Calc.fmt, fuel = v.fuel, isNew = v.age !== "used";
+  var plug = fuel === "ev" || fuel === "phev", lowCo2 = fuel !== "petrol";
+  var actCat = !isNew ? (fuel === "ev" ? "AAA" : "C") : { petrol: "B", hybrid: "A", phev: "AA", ev: "AAA" }[fuel];
+  var opts = {
+    NSW: { type: "passenger" },
+    VIC: { type: lowCo2 ? "green" : "passenger" },
+    QLD: { engine: lowCo2 ? "ev" : "c4" },
+    SA: { type: "passenger" },
+    WA: {},
+    TAS: { type: "passenger" },
+    ACT: { isNew: isNew, cat: actCat },
+    NT: { ev: plug }
+  };
+  var rows = Object.keys(opts).map(function (s) {
+    var r = Calc.carDuty(s, v.value || 0, opts[s]);
+    return [s, f.money0(r.duty) + " (" + f.pct(r.effectiveRate, 1) + ")"];
+  });
+  return Calc.table(rows);
+});
+</script>

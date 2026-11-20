@@ -1,0 +1,73 @@
+<!--{"title": "WA Car Stamp Duty Calculator (Vehicle Licence Duty)", "description": "Western Australian vehicle licence duty: 2.75% up to $25,000, a sliding rate up to $50,000, and 6.5% of the whole value above that. Calculator with the sliding-rate formula worked through.", "state": "WA", "app": true, "order": 5}-->
+<h1>Western Australia car stamp duty calculator</h1>
+<p class="lede">Vehicle licence duty, paid to the Department of Transport when a vehicle is licensed or a licence is transferred into your name. For most cars priced between $50,000 and $100,000, WA's duty is the highest in Australia.</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Dutiable value <small>new: manufacturer's WA retail price; used: market value</small>
+    <input type="number" name="value" value="40000" min="0" step="100" inputmode="numeric">
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+<p class="note">For light vehicles: 4.5 tonnes gross mass or less.</p>
+</div>
+{{ad}}
+
+<h2>WA vehicle licence duty rates</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Dutiable value</th><th>Duty</th></tr></thead>
+<tbody>
+<tr><td>Up to $25,000</td><td>2.75% of the value</td></tr>
+<tr><td>$25,000 to $50,000</td><td>R% of the value, where R = 2.75 + (value − 25,000) ÷ 6,666.66, rounded to 2 decimal places</td></tr>
+<tr><td>Over $50,000</td><td>6.5% of the value</td></tr>
+</tbody></table></div>
+<p>The rate always applies to the whole value. Between $25,000 and $50,000 the rate itself climbs by 0.15 percentage points for every $1,000, from 2.75% to 6.5%, so the duty rises much faster than the price: going from $40,000 to $50,000 adds $1,250 of duty.</p>
+
+<h2>Worked example: the sliding rate on a $40,000 car</h2>
+<div class="table-wrap"><table class="ex">
+<tbody>
+<tr><td>Amount over $25,000</td><td class="n">$15,000</td></tr>
+<tr><td>$15,000 ÷ 6,666.66</td><td class="n">2.25</td></tr>
+<tr><td>R = 2.75 + 2.25</td><td class="n">5.00%</td></tr>
+<tr><td><strong>Duty = 5.00% × $40,000</strong></td><td class="n"><strong>$2,000</strong></td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Value</th><th class="n">Rate</th><th class="n">Duty</th></tr></thead>
+<tbody>
+<tr><td>$20,000</td><td class="n">2.75%</td><td class="n">$550</td></tr>
+<tr><td>$30,000</td><td class="n">3.50%</td><td class="n">$1,050</td></tr>
+<tr><td>$40,000</td><td class="n">5.00%</td><td class="n">$2,000</td></tr>
+<tr><td>$50,000</td><td class="n">6.50%</td><td class="n">$3,250</td></tr>
+<tr><td>$60,000</td><td class="n">6.50%</td><td class="n">$3,900</td></tr>
+</tbody></table></div>
+
+<h2>What value is the duty charged on?</h2>
+<ul>
+<li><strong>New car:</strong> the retail selling price set by the manufacturer for Western Australia, including the factory options such as transmission and engine size. A delivery or order fee built into the manufacturer's price counts; charges a dealer adds on top do not.</li>
+<li><strong>Used car:</strong> you estimate the value on the Notification of Change of Ownership form. RevenueWA's practice note DA 50 explains how, and it can reassess a value that is too low.</li>
+<li><strong>Demonstrators:</strong> a demo car must have been used for more than two months before it can be sold as used. A car that only sat in the showroom is still new and pays duty on the full retail price.</li>
+<li><strong>Light commercial vehicles:</strong> the open-market value on the date of transfer, using Redbook as a guide.</li>
+</ul>
+
+<h2>Electric and hybrid cars</h2>
+<p>WA's duty rates do not change with the fuel: an EV, a hybrid and a petrol car with the same dutiable value pay the same duty. For an EV the manufacturer's fixed price, including any delivery or order fee it sets, is the value.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>The vehicle licence fee and compulsory third-party insurance, which are separate.</li>
+<li>Exemptions: transfers between spouses or de facto partners, cars returned for a refund or a cancelled purchase, some concession card holders, wheelchair-hoist vehicles and classic cars. Some transfers pay a nominal $20 instead.</li>
+<li>A car last registered in your own name in another state, which pays no duty when you license it in WA.</li>
+<li>Heavy vehicles: 3% of the value, capped at $12,000 of duty.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: Government of Western Australia, Department of Treasury and Finance, <a href="https://www.wa.gov.au/organisation/department-of-treasury-and-finance/vehicle-licence-duty">Vehicle licence duty</a> (page updated 14 August 2026). Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("WA", v.value, {});
+});
+</script>

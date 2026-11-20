@@ -80,12 +80,17 @@ def build():
         ads_head = ('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
                     f'?client={site["adsense"]["client"]}" crossorigin="anonymous"></script>')
 
+    # Links to every state's car stamp duty page ("state" in the header), for {{duty_states}}.
+    states = sorted((p for p in pages if "state" in p["meta"]), key=lambda p: p["meta"]["order"])
+    duty_states = '<ul class="chips">' + "".join(
+        f'<li><a href="/{p["slug"]}/">{html.escape(p["meta"]["state"])}</a></li>' for p in states) + "</ul>"
+
     for p in pages:
         meta = p["meta"]
         url = page_url(site, p["slug"])
         title = meta["title"] if p["slug"] == "index" else f'{meta["title"]} | {site["name"]}'
         jsonld = ""
-        if "card" in meta:
+        if "card" in meta or meta.get("app"):
             jsonld = '<script type="application/ld+json">' + json.dumps({
                 "@context": "https://schema.org", "@type": "WebApplication",
                 "name": meta["title"], "url": url, "description": meta["description"],
@@ -93,6 +98,7 @@ def build():
                 "offers": {"@type": "Offer", "price": "0", "priceCurrency": "AUD"},
             }) + "</script>"
         body = (p["body"].replace("{{calc_list}}", grid)
+                .replace("{{duty_states}}", duty_states)
                 .replace("{{ad}}", ad_slot(site))
                 .replace("{{contact}}", site["contact"])
                 .replace("{{site_name}}", site["name"]))

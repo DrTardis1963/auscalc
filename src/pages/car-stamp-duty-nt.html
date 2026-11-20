@@ -1,0 +1,66 @@
+<!--{"title": "NT Car Stamp Duty Calculator (incl. EV Concession to June 2027)", "description": "Northern Territory stamp duty on a car is a flat $3 per $100. Electric cars and plug-in hybrids pay nothing on the first $50,000 until 30 June 2027. Calculator and worked examples.", "state": "NT", "app": true, "order": 8}-->
+<h1>Northern Territory car stamp duty calculator</h1>
+<p class="lede">Stamp duty charged when a motor vehicle registration is issued or transferred in the NT, collected by the Motor Vehicle Registry (MVR).</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Dutiable value <small>usually the sale price, incl. accessories, trade-in and dealer delivery</small>
+    <input type="number" name="value" value="60000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Fuel
+    <select name="fuel">
+      <option value="std">Petrol, diesel or regular hybrid</option>
+      <option value="ev" selected>Battery electric or plug-in hybrid</option>
+    </select>
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>NT stamp duty rate</h2>
+<div class="callout">Duty = $3 for every $100, or part of $100, of the dutiable value. One flat 3% rate for every value, with no steps.</div>
+<p>The NT is the simplest state to work out and, for a car above about $45,000, one of the cheapest, because there is no higher tier for dearer cars.</p>
+
+<h2>Electric vehicle concession to 30 June 2027</h2>
+<p>From 1 July 2022 until 30 June 2027 the NT gives plug-in electric vehicles a stamp duty concession of up to $1,500, the duty on the first $50,000:</p>
+<ul>
+<li>A battery electric car or plug-in hybrid worth up to $50,000 pays <strong>no stamp duty</strong>.</li>
+<li>Above $50,000 you pay 3% on the amount over $50,000 only.</li>
+<li>It covers new and used vehicles of any age, cars owned by companies, business vehicles and heavy vehicles, and it is applied automatically when you register or transfer.</li>
+<li>The vehicle must have an electric primary power source and be recorded as BEV or PHEV on the registration certificate or roadworthy inspection. A regular hybrid that cannot plug in does not qualify.</li>
+<li>Eligible plug-in vehicles also get free registration over the same period, though the Motor Accidents Compensation charge still applies.</li>
+</ul>
+
+<h2>Worked examples</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Vehicle</th><th>Working</th><th class="n">Duty</th></tr></thead>
+<tbody>
+<tr><td>$50,000 petrol 4WD</td><td>500 × $3</td><td class="n">$1,500</td></tr>
+<tr><td>$60,000 petrol 4WD</td><td>600 × $3</td><td class="n">$1,800</td></tr>
+<tr><td>$45,000 EV</td><td>under $50,000</td><td class="n">$0</td></tr>
+<tr><td>$60,000 EV or plug-in hybrid</td><td>100 × $3 on the $10,000 over $50,000</td><td class="n">$300</td></tr>
+</tbody></table></div>
+<p>At $60,000 the concession saves $1,500. Bought after 30 June 2027, the same EV would pay $1,800 unless the concession is extended.</p>
+
+<h2>What value is the duty charged on?</h2>
+<p>Usually the sale price, which includes accessories added to the car, any trade-in allowance and dealer delivery charges. In some cases, such as a sale between family members that is not at arm's length, the market value is used instead.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Registration fees and the Motor Accidents Compensation (MAC) charge.</li>
+<li>Exemptions, which need the Territory Revenue Office's application form.</li>
+<li>Changes after 30 June 2027, when the EV concession is due to end.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: NT Department of Treasury and Finance, <a href="https://treasury.nt.gov.au/dtf/territory-revenue-office/stamp-duty">Stamp duty</a> (stamp duty on motor vehicles); NT Government, <a href="https://nt.gov.au/driving/rego/getting-an-nt-registration/get-electric-vehicle-registration-and-stamp-duty-concessions">Get registration and stamp duty concessions for electric vehicles</a>. Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("NT", v.value, { ev: v.fuel === "ev" });
+});
+</script>

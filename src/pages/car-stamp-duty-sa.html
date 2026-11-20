@@ -1,0 +1,72 @@
+<!--{"title": "SA Car Stamp Duty Calculator (Stamp Duty on Vehicles)", "description": "South Australian stamp duty on a car: $60 plus $4 per $100 over $3,000, or $30 plus $3 per $100 over $2,000 for utes and vans. Calculator, the full sliding scale and worked examples.", "state": "SA", "app": true, "order": 4}-->
+<h1>South Australia car stamp duty calculator</h1>
+<p class="lede">Stamp duty on vehicles, set by RevenueSA and paid to the Registrar of Motor Vehicles when a car is registered in your name.</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Purchase price or value
+    <input type="number" name="value" value="40000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Vehicle type
+    <select name="type">
+      <option value="passenger" selected>Non-commercial: car, SUV, 4WD</option>
+      <option value="other">Commercial: ute, panel van, van</option>
+    </select>
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>South Australian vehicle stamp duty rates</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Value</th><th>Non-commercial</th><th>Commercial</th></tr></thead>
+<tbody>
+<tr><td>Up to $1,000</td><td>$1 per $100, minimum $5</td><td>$1 per $100, minimum $5</td></tr>
+<tr><td>$1,000 to $2,000</td><td>$10 plus $2 per $100 over $1,000</td><td>$10 plus $2 per $100 over $1,000</td></tr>
+<tr><td>$2,000 to $3,000</td><td>$30 plus $3 per $100 over $2,000</td><td rowspan="2">$30 plus $3 per $100 over $2,000</td></tr>
+<tr><td>Over $3,000</td><td>$60 plus $4 per $100 over $3,000</td></tr>
+</tbody></table></div>
+<p>Each step is charged only on the part of the value inside it, and any part of $100 counts as a whole $100. For almost any real car the top line is the one that matters: the duty is close to 4% of the price (3% for a commercial vehicle), less $60 (or $30).</p>
+<p>RevenueSA counts utes, panel vans, vans and heavy vehicles as commercial. Everything else, including 4WDs and SUVs, is non-commercial.</p>
+
+<h2>Worked examples</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Vehicle</th><th>Working</th><th class="n">Duty</th></tr></thead>
+<tbody>
+<tr><td>$40,000 SUV</td><td>$60 + 370 × $4</td><td class="n">$1,540</td></tr>
+<tr><td>$40,000 ute</td><td>$30 + 380 × $3</td><td class="n">$1,170</td></tr>
+<tr><td>$15,000 used hatch</td><td>$60 + 120 × $4</td><td class="n">$540</td></tr>
+<tr><td>$2,500 runabout</td><td>$30 + 5 × $3</td><td class="n">$45</td></tr>
+<tr><td>$800 project car</td><td>8 × $1</td><td class="n">$8</td></tr>
+</tbody></table></div>
+<p>On a $40,000 vehicle, choosing a ute instead of an SUV saves $370 in duty.</p>
+
+<h2>When you pay, and on what value</h2>
+<ul>
+<li>You pay when you register a brand new vehicle in your name, or transfer a second-hand vehicle into your name. The transfer must be done within 14 days of buying it.</li>
+<li>The duty is worked out on the purchase price or the value of the vehicle. RevenueSA audits dealers and private sales and uses data matching to find values declared below the real price or market value; underpayments attract interest and penalty tax.</li>
+<li>Bought interstate and transferred straight from the seller into your name in SA: duty applies. Moving a car already registered in your name in another state to SA registration in the same name: no duty, though a transfer fee still applies.</li>
+</ul>
+
+<h2>Electric and hybrid cars</h2>
+<p>South Australia's vehicle duty rates do not depend on the fuel. An electric car, a hybrid and a petrol car at the same price pay the same duty.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Registration, CTP insurance and the transfer fee.</li>
+<li>Exemptions and relief listed on RevenueSA's page, and the separate rules for second-hand vehicle dealers.</li>
+<li>Heavy vehicles, which have their own page at RevenueSA.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: RevenueSA, <a href="https://www.revenuesa.sa.gov.au/stamp-duty-vehicles/rates">Stamp Duty on Vehicles: Rates</a> and <a href="https://www.revenuesa.sa.gov.au/stamp-duty-vehicles">Stamp Duty on Vehicles</a>. Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("SA", v.value, { type: v.type });
+});
+</script>

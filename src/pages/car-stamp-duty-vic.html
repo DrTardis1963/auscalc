@@ -1,0 +1,87 @@
+<!--{"title": "VIC Car Stamp Duty Calculator 2026-27 (Motor Vehicle Duty)", "description": "Victorian motor vehicle duty from 1 July 2026: $8.40 per $200 up to $80,809, rising to $10.40, $14 and $18 per $200 on dearer cars. Green car, ute and primary producer rates, with worked examples.", "state": "VIC", "app": true, "order": 2}-->
+<h1>Victoria car stamp duty calculator</h1>
+<p class="lede">Motor vehicle duty set by the State Revenue Office and collected by VicRoads when you register or transfer a vehicle. Rates from 1 July 2026.</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Dutiable value <small>price incl. GST and LCT, or market value if higher</small>
+    <input type="number" name="value" value="45000" min="0" step="200" inputmode="numeric">
+  </label>
+  <label>Vehicle type
+    <select name="type">
+      <option value="passenger" selected>Passenger car (petrol, diesel, most hybrids over 120 g/km)</option>
+      <option value="green">Green car: 120 g/km CO2 or less, incl. EVs</option>
+      <option value="primary">Primary producer's passenger car</option>
+      <option value="otherNew">Ute, van or motorcycle: new</option>
+      <option value="otherUsed">Ute, van or motorcycle: used</option>
+    </select>
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>Victorian motor vehicle duty rates from 1 July 2026</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Vehicle</th><th>Value</th><th>Rate</th></tr></thead>
+<tbody>
+<tr><td>Passenger car</td><td>$0 to $80,809</td><td>$8.40 per $200</td></tr>
+<tr><td>Passenger car</td><td>$80,809.01 to $100,000</td><td>$10.40 per $200</td></tr>
+<tr><td>Passenger car</td><td>$100,000.01 to $150,000</td><td>$14.00 per $200</td></tr>
+<tr><td>Passenger car</td><td>Over $150,000</td><td>$18.00 per $200</td></tr>
+<tr><td>Green passenger car</td><td>All values</td><td>$8.40 per $200</td></tr>
+<tr><td>Primary producer passenger car</td><td>All values</td><td>$8.40 per $200</td></tr>
+<tr><td>Non-passenger, new</td><td>All values</td><td>$5.40 per $200</td></tr>
+<tr><td>Non-passenger, used or re-registered</td><td>All values</td><td>$8.40 per $200</td></tr>
+</tbody></table></div>
+<p>Two things make Victoria different from most states:</p>
+<ul>
+<li><strong>One rate on the whole value.</strong> The rate for your band applies to every dollar, not just the part above the threshold. Crossing $80,809 by a little lifts the duty on the entire car.</li>
+<li><strong>Per $200, rounded up.</strong> The value is rounded up to the next $200 before the rate is applied, so $45,001 is charged as $45,200.</li>
+</ul>
+<p>Non-passenger vehicles are motorcycles, vehicles built for more than eight adults, and vehicles mainly designed to carry goods, including utes and dual-cab utes.</p>
+
+<h2>Worked examples</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Car</th><th>Working</th><th class="n">Duty</th></tr></thead>
+<tbody>
+<tr><td>$45,000 petrol hatch</td><td>225 × $8.40</td><td class="n">$1,890</td></tr>
+<tr><td>$80,809 petrol SUV</td><td>405 × $8.40</td><td class="n">$3,402</td></tr>
+<tr><td>$81,000 petrol SUV</td><td>405 × $10.40</td><td class="n">$4,212</td></tr>
+<tr><td>$90,000 petrol SUV</td><td>450 × $10.40</td><td class="n">$4,680</td></tr>
+<tr><td>$90,000 EV (green car)</td><td>450 × $8.40</td><td class="n">$3,780</td></tr>
+<tr><td>$50,000 new dual-cab ute</td><td>250 × $5.40</td><td class="n">$1,350</td></tr>
+<tr><td>$50,000 used dual-cab ute</td><td>250 × $8.40</td><td class="n">$2,100</td></tr>
+</tbody></table></div>
+<p>The jump from $80,809 to $81,000 is the one to watch: $191 more on the price adds <strong>$810</strong> of duty. If you are negotiating near a band edge, getting the price under it saves more than the discount itself. The green-car rate only saves money on cars above $80,809; below that the green and normal rates are the same.</p>
+
+<h2>What value is the duty charged on?</h2>
+<ul>
+<li>The higher of the purchase price (including GST and any luxury car tax) and the market value when you register or transfer.</li>
+<li>For a used car the value is worked out when you lodge the transfer with VicRoads, not when you bought it.</li>
+<li>Repairs or improvements made before registration, such as work to pass a roadworthy, are added to the value.</li>
+<li>VicRoads does not check the value you declare, but the SRO compares it with an industry valuation guide and can send a reassessment.</li>
+</ul>
+
+<h2>Electric, hybrid and green cars</h2>
+<p>A green car is a passenger car with combined tailpipe CO2 emissions of 120 grams per kilometre or less. Every fully electric car qualifies, and so do many hybrids and plug-in hybrids; look up the "combined" figure in the federal Green Vehicle Guide or the manufacturer's specifications. The green rate stays at $8.40 per $200 at every price, which is worth $900 on a $90,000 car and more above $100,000.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Registration, the TAC charge and transfer fees, which VicRoads charges separately.</li>
+<li>Exemptions and refunds, such as transfers between spouses or domestic partners and some vehicles for veterans, primary producers and people with a disability.</li>
+<li>Licensed motor car trader rules, change-of-use duty and heavy trailers.</li>
+<li>Dealer drive-away prices, which the SRO treats with their own worked examples.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: State Revenue Office Victoria, <a href="https://www.sro.vic.gov.au/about-us/rates-and-statistics/current-rates/motor-vehicle-duty-current-rates">Motor vehicle duty (current rates)</a> (rates from 1 July 2026, page updated 13 November 2026) and <a href="https://www.sro.vic.gov.au/vehicles-and-car-parks/motor-vehicle-duty/understanding-motor-vehicle-duty">Understanding motor vehicle duty</a>. Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("VIC", v.value, { type: v.type });
+});
+</script>

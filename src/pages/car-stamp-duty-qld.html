@@ -1,0 +1,78 @@
+<!--{"title": "QLD Car Stamp Duty Calculator (Vehicle Registration Duty)", "description": "Queensland vehicle registration duty by engine type: 2% for hybrids and EVs, 3% for 4 cylinders, 3.5% for 6 and 4% for 8, with higher rates on the whole price above $100,000. Worked examples included.", "state": "QLD", "app": true, "order": 3}-->
+<h1>Queensland car stamp duty calculator</h1>
+<p class="lede">Vehicle registration duty, paid to the Department of Transport and Main Roads when you register or transfer a car in Queensland. The rate depends on the engine.</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Dutiable value <small>new: list price plus options; used: price paid or market value, if higher</small>
+    <input type="number" name="value" value="45000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Engine
+    <select name="engine">
+      <option value="ev">Hybrid or electric (any)</option>
+      <option value="c4" selected>1 to 4 cylinders, 2 rotors or steam</option>
+      <option value="c6">5 or 6 cylinders, or 3 rotors</option>
+      <option value="c8">7 or more cylinders</option>
+    </select>
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+<p class="note">For light vehicles: cars, 4WDs, utes and motorbikes up to 4.5 tonnes gross vehicle mass.</p>
+</div>
+{{ad}}
+
+<h2>Queensland duty rates for light vehicles</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Engine</th><th>Up to $100,000</th><th>More than $100,000</th></tr></thead>
+<tbody>
+<tr><td>Hybrid (any cylinders) or electric</td><td>$2 per $100</td><td>$4 per $100</td></tr>
+<tr><td>1 to 4 cylinders, 2 rotors, steam</td><td>$3 per $100</td><td>$5 per $100</td></tr>
+<tr><td>5 or 6 cylinders, 3 rotors</td><td>$3.50 per $100</td><td>$5.50 per $100</td></tr>
+<tr><td>7 or more cylinders</td><td>$4 per $100</td><td>$6 per $100</td></tr>
+</tbody></table></div>
+<p>Each rate is per $100 or part of $100, and it applies to the <strong>whole</strong> value. Once a car is worth more than $100,000 the higher rate covers every dollar, not only the part above $100,000. Queensland's own estimator agrees: a $110,050 four-cylinder car is charged 1,101 × $5 = $5,505.</p>
+
+<h2>Worked examples</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Car</th><th>Working</th><th class="n">Duty</th></tr></thead>
+<tbody>
+<tr><td>$45,000 four-cylinder petrol</td><td>450 × $3</td><td class="n">$1,350</td></tr>
+<tr><td>$45,000 hybrid</td><td>450 × $2</td><td class="n">$900</td></tr>
+<tr><td>$45,000 six-cylinder</td><td>450 × $3.50</td><td class="n">$1,575</td></tr>
+<tr><td>$80,000 V8 4WD</td><td>800 × $4</td><td class="n">$3,200</td></tr>
+<tr><td>$100,000 EV</td><td>1,000 × $2</td><td class="n">$2,000</td></tr>
+<tr><td>$100,100 EV</td><td>1,001 × $4</td><td class="n">$4,004</td></tr>
+</tbody></table></div>
+<p>The last two rows show the $100,000 cliff: $100 more on the list price doubles the duty, adding $2,004. Choosing a hybrid over the same-priced four-cylinder saves a third of the duty, $450 on a $45,000 car.</p>
+
+<h2>What value is the duty charged on?</h2>
+<ul>
+<li><strong>New car:</strong> the list price, meaning the manufacturer's recommended retail price including GST and luxury car tax, plus whatever you paid for optional equipment. A discount you negotiate does not lower it. Buy a car listed at $60,000 for $56,000 and you still pay duty on $60,000.</li>
+<li><strong>Used car, or a new car with no list price:</strong> the higher of the total you paid (counting any deposit, trade-in allowance, dealer delivery, warranties and options) and the market value. A cheap sale between family members is charged on market value.</li>
+<li><strong>Repaired or imported cars:</strong> the market value when registered, so repairs made before registration raise the duty.</li>
+<li><strong>Modified for a person with a disability:</strong> the cost of the modification is taken off the value.</li>
+</ul>
+
+<h2>Hybrids and electric cars</h2>
+<p>Queensland is one of the few states where a hybrid pays less duty than a petrol car. Any hybrid, whatever its cylinder count, and any fully electric car pays the 2% rate up to $100,000 and 4% above. That makes a $45,000 hybrid $450 cheaper to register than a four-cylinder petrol car at the same price.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Registration fees and CTP insurance, which are separate.</li>
+<li>Exemptions for family transfers, dealers, businesses and charities, and the motorised-wheelchair exemption.</li>
+<li>Heavy vehicles over 4.5 tonnes, which pay the lower rate at every value, and conditionally registered machines such as forklifts and tractors ($25).</li>
+<li>Contracts signed before 1 July 2018, which use the older rates.</li>
+<li>Caravans, trailers and boats, which pay no vehicle registration duty.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: Queensland Government, <a href="https://www.qld.gov.au/transport/registration/costs/duty/rates">Vehicle registration duty rates</a> (reviewed 14 August 2026), <a href="https://www.qld.gov.au/transport/registration/costs/duty/about">About vehicle registration duty</a> and its duty estimator. Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("QLD", v.value, { engine: v.engine });
+});
+</script>

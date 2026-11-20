@@ -1,0 +1,69 @@
+<!--{"title": "NSW Car Stamp Duty Calculator (Motor Vehicle Duty)", "description": "Work out NSW motor vehicle duty on a new or used car: $3 per $100 up to $45,000, then $1,350 plus $5 per $100 above. Includes utes and vans, EVs (the exemption ended in 2023) and a worked example.", "state": "NSW", "app": true, "order": 1}-->
+<h1>NSW car stamp duty calculator</h1>
+<p class="lede">Motor vehicle duty you pay to Revenue NSW (collected by Service NSW) when you register a new car or transfer the registration of a used one.</p>
+
+<div class="calc-card">
+<form class="calc" id="duty">
+  <label>Car value <small>price incl. GST, or market value if higher</small>
+    <input type="number" name="value" value="50000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Vehicle type
+    <select name="type">
+      <option value="passenger" selected>Car, SUV, 4WD, people mover</option>
+      <option value="other">Not a passenger vehicle (motorcycle, truck, goods ute)</option>
+    </select>
+  </label>
+</form>
+<div class="result" id="duty-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>NSW motor vehicle duty rates</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Vehicle value</th><th>Passenger vehicle</th><th>Other vehicles</th></tr></thead>
+<tbody>
+<tr><td>Up to $44,999</td><td>$3 per $100</td><td>$3 per $100</td></tr>
+<tr><td>$45,000 or more</td><td>$1,350 plus $5 per $100 over $45,000</td><td>$3 per $100</td></tr>
+</tbody></table></div>
+<p>A passenger vehicle is a sedan, wagon, coupe, convertible, 4WD with seats and windows, people mover, small bus or motor home. The 5% tier does not apply to motorcycles, buses for more than nine people, hearses or disability vehicles, which pay 3% on the whole value.</p>
+<p>Only the part above $45,000 is charged at 5%, so the duty rises smoothly: there is no jump at the threshold. This calculator counts a part-$100 as a whole $100, the usual rule for this duty; Service NSW's own figure is the one you pay.</p>
+
+<h2>Worked example: a $50,000 new SUV</h2>
+<div class="table-wrap"><table class="ex">
+<tbody>
+<tr><td>Duty on the first $45,000</td><td class="n">$1,350</td></tr>
+<tr><td>$5,000 above $45,000 = 50 lots of $100 × $5</td><td class="n">$250</td></tr>
+<tr><td><strong>Stamp duty</strong></td><td class="n"><strong>$1,600</strong></td></tr>
+</tbody></table></div>
+<p>That is 3.2% of the price. A $30,000 used hatchback costs 300 × $3 = <strong>$900</strong>, and a $60,000 dual-motor EV costs $1,350 + 150 × $5 = <strong>$2,100</strong>. A $60,000 vehicle that is not a passenger vehicle pays the flat 3%: <strong>$1,800</strong>.</p>
+<p class="note">Revenue NSW's passenger list includes "four-wheel drive vehicle, with seats and windows", which can take in a 4WD dual-cab ute. If you are not sure which side of the line your ute falls on, ask Service NSW before you rely on the lower figure.</p>
+
+<h2>What value is the duty charged on?</h2>
+<ul>
+<li><strong>New car:</strong> the amount you paid, including GST. A factory rebate paid to you after the sale does not lower it, but an extended warranty bought on top is not included.</li>
+<li><strong>Used car:</strong> the sale price or the market value, whichever is higher. Both the seller and buyer write the market value on the transfer form. If you are unsure of it, ask a dealer or your insurer or look up the make, model and year.</li>
+<li><strong>Undervaluing costs more.</strong> Revenue NSW checks declared values. If it finds the value was understated it charges the missing duty, daily interest and penalty tax of up to 90% of the shortfall.</li>
+</ul>
+
+<h2>Electric and hybrid cars in NSW</h2>
+<p>NSW exempted battery electric and hydrogen fuel cell cars worth up to $78,000 from duty between 1 September 2021 and 31 December 2023. That exemption has ended: an EV registered now pays the same rates as a petrol car. Buyers who signed a contract or paid a deposit on an eligible EV before 1 January 2024 can still apply for a refund. Hybrids never had a concession.</p>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Registration, CTP (green slip) and the transfer fee, which are separate charges.</li>
+<li>Exemptions, such as transfers between spouses, changing the name on a registration, and some disability vehicles, charities and caravans. Revenue NSW's exemptions page lists the evidence each needs.</li>
+<li>Duty relief for a replacement car when yours was destroyed in a declared natural disaster.</li>
+<li>Heavy vehicles and dealer-only rules.</li>
+</ul>
+
+<h2>Other states</h2>
+<p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
+{{duty_states}}
+
+<p class="sources">Sources: Revenue NSW, <a href="https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/motor-vehicle-duty">Motor vehicle duty</a> (page updated 16 October 2025) and its exemptions page; NSW Government, <a href="https://www.nsw.gov.au/driving-boating-and-transport/nsw-governments-electric-vehicle-strategy/abolish-stamp-duty">Stamp duty exemption on electric vehicle purchases</a>. Checked 21 November 2026.</p>
+
+<script>
+Calc.ui("duty", function (v) {
+  return Calc.dutyResult("NSW", v.value, { type: v.type });
+});
+</script>
