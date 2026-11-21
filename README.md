@@ -51,8 +51,9 @@ py -m http.server 8064 --directory dist
 1. Put this line in `ads.txt` at the ROOT site, https://primemoverindustries.com/ads.txt
    (AdSense checks the root domain, not the subdomain):
    `google.com, pub-3886111503622765, DIRECT, f08c47fec0942fa0`
-2. Set `"enabled": true` in `site.json` and push. That adds the AdSense script (Auto ads) and
-   the in-page ad spots; they stay blank until approval.
+2. `"enabled": true` in `site.json` (done 2026-11-22) adds the AdSense script, so Auto ads
+   place ads once the site is approved. For fixed spots at `{{ad}}`, make a display ad unit in
+   AdSense and put its slot id in `"slot"`; while `"slot"` is empty those spots are left out.
 3. In AdSense (publisher pub-3886111503622765), Sites -> Add site -> `primemoverindustries.com`.
    AdSense says which check it wants (code snippet, ads.txt or meta tag); the root site may need
    the snippet too. Link to the calculators from the root site's home page so the reviewer finds them.
