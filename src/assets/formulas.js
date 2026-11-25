@@ -347,8 +347,69 @@
     return { duty: round2(r.duty), how: r.how, effectiveRate: v > 0 ? r.duty / v : 0 };
   }
 
+  // ---- QLD vehicle registration duty, with the working shown ------------
+  // Dutiable value (qld.gov.au "About vehicle registration duty"):
+  //   new car with a list price: list price (incl. GST and LCT) + optional equipment
+  //   used car, or no list price: the higher of the total paid (deposit, trade-in
+  //   allowance, dealer delivery, warranties, options) and the market value
+  //   either way, less the cost of modifications for a person with a disability
+  // o: { isNew, listPrice, options, paid, market, disabilityMods }
+  function qldDutiableValue(o) {
+    var v = o.isNew ? (o.listPrice || 0) + (o.options || 0) : Math.max(o.paid || 0, o.market || 0);
+    return Math.max(0, v - (o.disabilityMods || 0));
+  }
+
+  // o.engine: "ev" | "c4" | "c6" | "c8"; o.cls: "light" (default) | "heavy" (over 4.5 t GVM) | "special" ($25)
+  function qldDuty(value, o) {
+    o = o || {};
+    var v = value > 0 ? value : 0;
+    if (o.cls === "special") return { duty: 25, hundreds: 0, rate: 0, high: false, how: "flat $25" };
+    var r = CAR_DUTY.qld[o.engine || "c4"];
+    var high = o.cls !== "heavy" && v > 100000;
+    var rate = high ? r[1] : r[0], n = units(v, 100);
+    // what the same car would pay on the other side of the $100,000 line
+    var atLine = r[0] * 1000, justOver = r[1] * 1001;
+    return { duty: round2(rate * n), hundreds: n, rate: rate, high: high, atLine: atLine, justOver: justOver,
+      how: "$" + rate.toFixed(2) + " per $100 on the whole value" };
+  }
+
+  // ---- Registration costs (12 months, private use) -----------------------
+  var REGO = {
+    checked: "26 November 2026",
+    // QLD light vehicles up to 4 t, "cost as at 1 October 2026" (qld.gov.au registration fees)
+    qld: {
+      rego: { c3: 303.10, c4: 385.45, c6: 610.30, c8: 854.70, c12: 1002.35 },
+      concession: { c3: 151.55, c4: 192.75, c6: 305.15, c8: 427.35, c12: 501.20 }, // card from 1 July 1994
+      concessionPre1994: 108.60, // any vehicle up to 4 t
+      tif: 67.25, ctp: [411.80, 427.80], transfer: 33.65, plates: 36.25
+    },
+    // SA, 12 months incl. CTP estimate and admin fee, effective 1 July 2026 (sa.gov.au)
+    sa: { metro: { c4: 705, c6: 875, c8: 1025 }, country: { c4: 585, c6: 755, c8: 900 } },
+    // VIC sedan/wagon/hatch/SUV, annual fee incl. TAC charge (vicroads.vic.gov.au)
+    vic: { metro: 958.80, outer: 897.10, rural: 824.60 }
+  };
+
+  // QLD 12-month registration. cyl: "c3" (1-3 cylinders or electric) | "c4" | "c6" | "c8" | "c12"
+  // concession: "" | "card" (issued from 1 July 1994) | "pre1994"
+  function qldRego(cyl, concession) {
+    var q = REGO.qld, fee = concession === "pre1994" ? q.concessionPre1994
+      : concession === "card" ? q.concession[cyl] : q.rego[cyl];
+    return { rego: fee, tif: q.tif, ctpLow: q.ctp[0], ctpHigh: q.ctp[1],
+      low: round2(fee + q.tif + q.ctp[0]), high: round2(fee + q.tif + q.ctp[1]) };
+  }
+
+  // ---- Drive-away price for a new car --------------------------------------
+  // o: { state, price, options, delivery, dutyOnDelivery, dutyOpts, rego (12 months incl. CTP), other }
+  function driveaway(o) {
+    var dutiable = (o.price || 0) + (o.options || 0) + (o.dutyOnDelivery ? (o.delivery || 0) : 0);
+    var d = carDuty(o.state, dutiable, o.dutyOpts);
+    var total = (o.price || 0) + (o.options || 0) + (o.delivery || 0) + d.duty + (o.rego || 0) + (o.other || 0);
+    return { dutiable: dutiable, duty: d.duty, how: d.how, total: round2(total) };
+  }
+
   var api = {
     RATES: RATES, SOLAR_YIELD: SOLAR_YIELD, CAR_DUTY: CAR_DUTY, carDuty: carDuty,
+    REGO: REGO, qldDutiableValue: qldDutiableValue, qldDuty: qldDuty, qldRego: qldRego, driveaway: driveaway,
     incomeTax: incomeTax, lito: lito, medicareLevy: medicareLevy, payAfterTax: payAfterTax,
     marginalRate: marginalRate, gst: gst, repayment: repayment, mortgage: mortgage,
     superGuarantee: superGuarantee, salaryConvert: salaryConvert, casualToPermanent: casualToPermanent,

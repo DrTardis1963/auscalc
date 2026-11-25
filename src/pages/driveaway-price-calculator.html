@@ -1,0 +1,183 @@
+<!--{"title": "Drive-Away Price Calculator: New Car On-Road Costs by State", "short": "Drive-away price", "description": "Turn a new car's list price into a drive-away price: options, dealer delivery, stamp duty for your state, and 12 months of rego and CTP (official QLD, SA and VIC figures). Shows every line.", "card": "List price to drive-away price: dealer delivery, stamp duty, rego and CTP for your state.", "order": 10, "app": true, "updated": "26 November 2026"}-->
+<h1>Drive-away price calculator</h1>
+<p class="lede">The price on a new car's sticker is rarely what you pay. This adds the dealer's delivery charge, stamp duty for your state and a year of registration and CTP insurance, and shows each line so you can check a dealer's quote.</p>
+<p class="updated">Updated 26 November 2026. Duty rates checked November 2026; rego figures from the QLD, SA and VIC governments.</p>
+
+<div class="calc-card">
+<form class="calc" id="da">
+  <label>State or territory
+    <select name="state">
+      <option value="NSW">New South Wales</option>
+      <option value="VIC">Victoria</option>
+      <option value="QLD" selected>Queensland</option>
+      <option value="SA">South Australia</option>
+      <option value="WA">Western Australia</option>
+      <option value="TAS">Tasmania</option>
+      <option value="ACT">Australian Capital Territory</option>
+      <option value="NT">Northern Territory</option>
+    </select>
+  </label>
+  <label>Car price <small>list price incl. GST (and luxury car tax if any)</small>
+    <input type="number" name="price" value="45000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Options and accessories
+    <input type="number" name="options" value="0" min="0" step="100" inputmode="numeric">
+  </label>
+  <label>Dealer delivery <small>delivery, pre-delivery and dealer charges</small>
+    <input type="number" name="delivery" value="2000" min="0" step="50" inputmode="numeric">
+  </label>
+  <label>Fuel
+    <select name="fuel">
+      <option value="petrol" selected>Petrol or diesel</option>
+      <option value="hybrid">Hybrid</option>
+      <option value="phev">Plug-in hybrid</option>
+      <option value="ev">Electric</option>
+    </select>
+  </label>
+  <label data-show="engine">Cylinders
+    <select name="cyl">
+      <option value="c3">1 to 3</option>
+      <option value="c4" selected>4</option>
+      <option value="c6">5 or 6</option>
+      <option value="c8">7 or 8</option>
+      <option value="c12">9 to 12</option>
+    </select>
+  </label>
+  <label>Body
+    <select name="body">
+      <option value="car" selected>Sedan, hatch, wagon or SUV</option>
+      <option value="ute">Ute or van</option>
+    </select>
+  </label>
+  <label data-show="zone">Where the car is kept
+    <select name="zone">
+      <option value="metro" selected>Metro</option>
+      <option value="outer">Outer metro (VIC)</option>
+      <option value="country">Country or rural</option>
+    </select>
+  </label>
+  <label>12-month rego and CTP <small>leave blank to use the official figure (QLD, SA, VIC cars)</small>
+    <input type="number" name="rego" value="" min="0" step="1" inputmode="numeric" placeholder="official figure">
+  </label>
+  <label>Other charges <small>e.g. tint, mats, dealer admin</small>
+    <input type="number" name="other" value="0" min="0" step="50" inputmode="numeric">
+  </label>
+  <label class="check wide"><input type="checkbox" name="dutyOnDelivery"> My state charges duty on dealer delivery too</label>
+</form>
+<div class="result" id="da-out" aria-live="polite"></div>
+</div>
+{{ad}}
+
+<h2>What goes into a drive-away price</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Part</th><th>Who sets it</th><th>Can you negotiate it?</th></tr></thead>
+<tbody>
+<tr><td>Car price and options</td><td>Manufacturer and dealer</td><td>Yes</td></tr>
+<tr><td>Dealer delivery</td><td>Dealer</td><td>Yes, often</td></tr>
+<tr><td>Stamp duty</td><td>Your state, by a fixed formula</td><td>No, but the price and options it is charged on can change</td></tr>
+<tr><td>Registration and CTP insurance</td><td>Your state; CTP by the insurer within limits</td><td>Only by choosing the CTP insurer</td></tr>
+</tbody></table></div>
+<p>So when you compare quotes, the government part should be the same at every dealer in your state for the same car. If two quotes differ, the difference is in the price, options or dealer delivery.</p>
+
+<h2>Worked examples: a $45,000 car with $2,000 dealer delivery</h2>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Where</th><th class="n">Duty</th><th class="n">Rego and CTP</th><th class="n">Drive-away</th></tr></thead>
+<tbody>
+<tr><td>Queensland, four-cylinder petrol</td><td class="n">$1,350</td><td class="n">$900.75</td><td class="n">$49,250.75</td></tr>
+<tr><td>Queensland, hybrid</td><td class="n">$900</td><td class="n">$900.75</td><td class="n">$48,800.75</td></tr>
+<tr><td>South Australia metro, four-cylinder</td><td class="n">$1,740</td><td class="n">$705</td><td class="n">$49,445</td></tr>
+<tr><td>Victoria metro, electric</td><td class="n">$1,890</td><td class="n">$958.80</td><td class="n">$49,848.80</td></tr>
+</tbody></table></div>
+<p>The Queensland rego figure is the cheapest CTP insurer plus $36.25 for number plates; the dearest insurer adds $16. On the same petrol car the government costs come to $2,250.75 in Queensland and $2,445 in South Australia; the Victorian EV pays $2,848.80, mostly because of stamp duty.</p>
+
+<h2>How registration is charged in each state</h2>
+<p>Every state charges rego differently, which is why no single figure fits the whole country:</p>
+<ul>
+<li><strong>Queensland:</strong> by number of cylinders, plus a flat traffic improvement fee and CTP. <a href="/qld-rego-calculator/">QLD rego calculator</a>.</li>
+<li><strong>South Australia:</strong> by cylinders and whether you live in the metro area or the country; the published fees include a CTP estimate. <a href="https://www.sa.gov.au/topics/driving-and-transport/motoring-fees/vehicle-registration-fees">SA fees</a>.</li>
+<li><strong>Victoria:</strong> a registration fee plus the TAC charge, which depends on where the car is kept: $958.80 a year in Melbourne, $897.10 in outer metro areas and $824.60 in the country for a car or SUV. <a href="https://www.vicroads.vic.gov.au/registrations/fees-and-charges/vehicle-fees">VicRoads fees</a>.</li>
+<li><strong>New South Wales:</strong> a registration fee plus motor vehicle tax by the car's weight (tare), and a separate green slip (CTP) bought from an insurer. <a href="https://service.nsw.gov.au/transaction/use-vehicle-registration-calculator">Service NSW calculator</a>.</li>
+<li><strong>Western Australia:</strong> a licence fee by the car's gross vehicle mass, a recording fee and motor injury insurance. <a href="https://www.transport.wa.gov.au/licensing/20382.asp">Transport WA fees</a>.</li>
+<li><strong>ACT:</strong> based on the car's emissions, weight and use, plus compulsory MAI insurance. <a href="https://www.accesscanberra.act.gov.au/driving-transport-and-parking/vehicle-and-transport-related-fees/vehicle-registration-fees">Access Canberra fees</a>.</li>
+<li><strong>Tasmania and the Northern Territory:</strong> use the state's own registration quote, then type the amount into the calculator above.</li>
+</ul>
+
+<h2>Stamp duty by state</h2>
+<p>The calculator uses the same formulas as our state pages, which explain each state's rates, discounts for electric cars and what counts in the value: <a href="/car-stamp-duty/">compare all states</a>, or pick one:</p>
+{{duty_states}}
+<p>A few assumptions keep this page simple. In Victoria, electric cars get the green-car rate; some hybrids qualify too, so check on the <a href="/car-stamp-duty-vic/">Victoria page</a>. In the ACT, electric cars are rated AAA and other cars use category C, the rate for cars with no emissions rating; your car's own rating may differ (see the <a href="/car-stamp-duty-act/">ACT page</a>). In the Northern Territory, electric and plug-in hybrid cars get the EV concession.</p>
+
+<h2>Common questions</h2>
+<details><summary>Is luxury car tax included?</summary>
+<p>Enter the list price including luxury car tax if the car has it. Luxury car tax is a federal tax built into the price of dearer cars; this calculator does not add it on top.</p></details>
+<details><summary>Why is my dealer's quote higher?</summary>
+<p>Check the dealer delivery line and any extras such as paint protection, tinting or extended warranties. The duty and rego should match this calculator within a few dollars for the same car and state.</p></details>
+<details><summary>Does the duty use the price I negotiated?</summary>
+<p>It depends on the state. In Queensland, a new car's duty is charged on its list price plus options, so a discount does not lower it. Other states' pages explain their rules.</p></details>
+<details><summary>Is a used car's price "drive-away"?</summary>
+<p>Usually not. A used car often comes with the seller's remaining rego, and the buyer pays the transfer fee and stamp duty. Use your state's stamp duty calculator for the duty.</p></details>
+
+<h2>What this leaves out</h2>
+<ul>
+<li>Business-use and novated-lease cars, fleet discounts and primary producer concessions.</li>
+<li>Concession card rates for rego (see the <a href="/qld-rego-calculator/">QLD rego calculator</a> for Queensland).</li>
+<li>Rego for utes and vans in SA and VIC, which is charged by weight or type: enter it yourself.</li>
+<li>Finance costs, insurance beyond CTP, and roadside assistance.</li>
+</ul>
+
+<p class="sources">Sources: stamp duty from each state revenue office, linked on our state pages; registration from the Queensland Government <a href="https://www.qld.gov.au/transport/registration/costs/fees">registration fees</a> (costs as at 1 October 2026), sa.gov.au <a href="https://www.sa.gov.au/topics/driving-and-transport/motoring-fees/vehicle-registration-fees">vehicle registration fees</a> (effective 1 July 2026) and VicRoads <a href="https://www.vicroads.vic.gov.au/registrations/fees-and-charges/vehicle-fees">vehicle fees</a>. Checked 26 November 2026.</p>
+
+<script>
+Calc.ui("da", function (v, form) {
+  var n = function (x) { return isFinite(x) ? x : 0; };
+  var electric = v.fuel === "ev", plugin = electric || v.fuel === "phev", hybrid = plugin || v.fuel === "hybrid";
+  var ute = v.body === "ute";
+  form.querySelector("[name=cyl]").closest("label").hidden = electric;
+  form.querySelector("[name=zone]").closest("label").hidden = !(v.state === "VIC" || v.state === "SA");
+  var cyl = electric ? "c3" : v.cyl;
+  var qEngine = hybrid ? "ev" : (cyl === "c3" || cyl === "c4") ? "c4" : cyl === "c6" ? "c6" : "c8";
+  var actPeriod = new Date() < new Date(2027, 1, 1) ? "2025" : "2027";
+  var opts = {
+    NSW: { type: ute ? "other" : "passenger" },
+    VIC: { type: ute ? "otherNew" : electric ? "green" : "passenger" },
+    QLD: { engine: qEngine },
+    SA: { type: ute ? "other" : "passenger" },
+    WA: {},
+    TAS: { type: ute ? "other" : "passenger" },
+    ACT: { isNew: true, cat: electric ? "AAA" : "C", period: actPeriod },
+    NT: { ev: plugin }
+  }[v.state];
+
+  // Official 12-month rego + CTP, where we have it
+  var regoAuto = null, regoLabel = "";
+  var R = Calc.REGO;
+  if (v.state === "QLD") {
+    regoAuto = Calc.qldRego(cyl, "").low + R.qld.plates;
+    regoLabel = "rego, traffic fee, cheapest CTP and plates";
+  } else if (v.state === "SA" && !ute && cyl !== "c12") {
+    var sz = v.zone === "country" ? "country" : "metro";
+    regoAuto = R.sa[sz][cyl === "c3" ? "c4" : cyl];
+    regoLabel = "SA " + sz + " rego incl. CTP estimate";
+  } else if (v.state === "VIC" && !ute) {
+    regoAuto = R.vic[v.zone];
+    regoLabel = "VIC rego incl. TAC charge";
+  }
+  var typed = isFinite(v.rego);
+  var rego = typed ? v.rego : regoAuto;
+  var r = Calc.driveaway({ state: v.state, price: n(v.price), options: n(v.options), delivery: n(v.delivery),
+    dutyOnDelivery: v.dutyOnDelivery, dutyOpts: opts, rego: rego || 0, other: n(v.other) });
+  var m = Calc.fmt.money;
+  var rows = [["Car price", m(n(v.price))]];
+  if (n(v.options)) rows.push(["Options", m(n(v.options))]);
+  rows.push(["Dealer delivery", m(n(v.delivery))]);
+  rows.push(["Stamp duty (" + r.how + ")", m(r.duty)]);
+  rows.push(["Rego and CTP" + (typed ? " (your figure)" : regoAuto !== null ? " (" + regoLabel + ")" : ""),
+    rego !== null ? m(rego) : "not included"]);
+  if (n(v.other)) rows.push(["Other charges", m(n(v.other))]);
+  rows.push([rego !== null ? "Drive-away price" : "Total before rego", m(r.total), true]);
+  var html = Calc.table(rows);
+  html += '<p class="note">Duty charged on ' + Calc.fmt.money0(r.dutiable) + ".";
+  if (rego === null) html += " Add your state’s 12-month rego and CTP in the box above for the full drive-away price.";
+  return html + "</p>";
+});
+</script>

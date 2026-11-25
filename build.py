@@ -12,6 +12,7 @@ import html
 import json
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -37,7 +38,7 @@ def load_pages():
             script, body = s.group(0), body[: s.start()]
         slug = path.stem
         meta.setdefault("order", 99)
-        pages.append({"slug": slug, "meta": meta, "body": body, "script": script})
+        pages.append({"slug": slug, "meta": meta, "body": body, "script": script, "path": path})
     return pages
 
 
@@ -47,6 +48,47 @@ def page_url(site, slug):
     if slug == "404":
         return site["url"] + "/404.html"
     return f"{site['url']}/{slug}/"
+
+
+def last_changed(path):
+    """Date of the last commit that touched `path` (YYYY-MM-DD), for sitemap lastmod.
+    Google only trusts lastmod when it tracks real content changes, so a build date won't do.
+    Uncommitted or untracked files get today's date."""
+    try:
+        if subprocess.run(["git", "diff", "--quiet", "HEAD", "--", str(path)], cwd=ROOT,
+                          stderr=subprocess.DEVNULL).returncode:
+            return datetime.date.today().isoformat()
+        out = subprocess.run(["git", "log", "-1", "--format=%cs", "--", str(path)],
+                             cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        return out or datetime.date.today().isoformat()
+    except OSError:
+        return datetime.date.today().isoformat()
+
+
+def crumb_name(meta):
+    if "short" in meta:
+        return meta["short"]
+    if "state" in meta:
+        return f'{meta["state"]} stamp duty'
+    return meta["title"].split(":")[0].split(" (")[0]
+
+
+def breadcrumbs(site, p, by_slug):
+    """Visible trail plus BreadcrumbList data: Home > [parent] > page."""
+    if p["slug"] in ("index", "404"):
+        return "", None
+    trail = [("Home", page_url(site, "index"), "/")]
+    parent = by_slug.get(p["meta"].get("parent") or ("car-stamp-duty" if "state" in p["meta"] else ""))
+    if parent:
+        trail.append((crumb_name(parent["meta"]), page_url(site, parent["slug"]), f'/{parent["slug"]}/'))
+    trail.append((crumb_name(p["meta"]), page_url(site, p["slug"]), None))
+    items = "".join(
+        f'<li><a href="{href}">{html.escape(name)}</a></li>' if href else f'<li aria-current="page">{html.escape(name)}</li>'
+        for name, _, href in trail)
+    data = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        dict({"@type": "ListItem", "position": i + 1, "name": name}, **({"item": url} if i < len(trail) - 1 else {}))
+        for i, (name, url, _) in enumerate(trail)]}
+    return f'<nav class="crumbs" aria-label="Breadcrumb"><ol>{items}</ol></nav>', data
 
 
 def ad_slot(site):
@@ -86,18 +128,28 @@ def build():
     duty_states = '<ul class="chips">' + "".join(
         f'<li><a href="/{p["slug"]}/">{html.escape(p["meta"]["state"])}</a></li>' for p in states) + "</ul>"
 
+    by_slug = {p["slug"]: p for p in pages}
     for p in pages:
         meta = p["meta"]
         url = page_url(site, p["slug"])
         title = meta["title"] if p["slug"] == "index" else f'{meta["title"]} | {site["name"]}'
-        jsonld = ""
+        data = []
         if "card" in meta or meta.get("app"):
-            jsonld = '<script type="application/ld+json">' + json.dumps({
+            data.append({
                 "@context": "https://schema.org", "@type": "WebApplication",
                 "name": meta["title"], "url": url, "description": meta["description"],
                 "applicationCategory": "FinanceApplication", "operatingSystem": "Any",
                 "offers": {"@type": "Offer", "price": "0", "priceCurrency": "AUD"},
-            }) + "</script>"
+            })
+        if p["slug"] == "index":
+            # Site name in Google results (supported for subdomains; markup on the home page).
+            host = site["url"].split("://", 1)[1]
+            data.append({"@context": "https://schema.org", "@type": "WebSite",
+                         "name": site["name"], "alternateName": [host], "url": site["url"] + "/"})
+        crumbs, crumb_data = breadcrumbs(site, p, by_slug)
+        if crumb_data:
+            data.append(crumb_data)
+        jsonld = "".join('<script type="application/ld+json">' + json.dumps(d) + "</script>" for d in data)
         body = (p["body"].replace("{{calc_list}}", grid)
                 .replace("{{duty_states}}", duty_states)
                 .replace("{{ad}}", ad_slot(site))
@@ -108,7 +160,7 @@ def build():
             "title": html.escape(title), "description": html.escape(meta["description"]),
             "canonical": url, "site_name": html.escape(site["name"]), "owner": html.escape(site["owner"]),
             "year": str(datetime.date.today().year), "version": version, "ads_head": ads_head,
-            "jsonld": jsonld, "scripts": p["script"], "content": body,
+            "jsonld": jsonld, "scripts": p["script"], "content": crumbs + body,
         }.items():
             out = out.replace("{{" + key + "}}", val)
         if "{{" in out:
@@ -120,11 +172,10 @@ def build():
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(out, encoding="utf-8")
 
-    today = datetime.date.today().isoformat()
-    urls = [page_url(site, p["slug"]) for p in pages if p["slug"] != "404"]
+    entries = [(page_url(site, p["slug"]), last_changed(p["path"])) for p in pages if p["slug"] != "404"]
     (DIST / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in urls)
+        + "".join(f"  <url><loc>{u}</loc><lastmod>{d}</lastmod></url>\n" for u, d in entries)
         + "</urlset>\n", encoding="utf-8")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
     pub = site["adsense"]["client"].replace("ca-", "")

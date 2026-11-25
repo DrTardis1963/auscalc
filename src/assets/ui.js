@@ -34,6 +34,13 @@
     ].concat(extra || []));
   };
 
+  // Show only the fields whose data-show lists `key` (space-separated); others are hidden.
+  Calc.showFor = function (form, key) {
+    Array.prototype.forEach.call(form.querySelectorAll("[data-show]"), function (el) {
+      el.hidden = (" " + el.getAttribute("data-show") + " ").indexOf(" " + key + " ") < 0;
+    });
+  };
+
   Calc.ui = function (formId, render) {
     var form = document.getElementById(formId);
     var out = document.getElementById(formId + "-out");

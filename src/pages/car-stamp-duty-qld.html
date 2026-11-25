@@ -1,23 +1,54 @@
-<!--{"title": "QLD Car Stamp Duty Calculator (Vehicle Registration Duty)", "description": "Queensland vehicle registration duty by engine type: 2% for hybrids and EVs, 3% for 4 cylinders, 3.5% for 6 and 4% for 8, with higher rates on the whole price above $100,000. Worked examples included.", "state": "QLD", "app": true, "order": 3}-->
+<!--{"title": "QLD Car Stamp Duty Calculator 2026–27 (Duty, Rego and CTP)", "description": "Work out Queensland vehicle registration duty on a new or used car with the working shown: the dutiable value, the hybrid and EV rate, the $100,000 rule, plus 2026-27 rego, CTP and transfer fees. Checked against qld.gov.au.", "state": "QLD", "app": true, "order": 3, "parent": "car-stamp-duty", "updated": "26 November 2026"}-->
 <h1>Queensland car stamp duty calculator</h1>
-<p class="lede">Vehicle registration duty, paid to the Department of Transport and Main Roads when you register or transfer a car in Queensland. The rate depends on the engine.</p>
+<p class="lede">Vehicle registration duty is the stamp duty you pay when you register a car in Queensland or transfer it into your name. Enter the car and this works out the dutiable value, the duty with every step shown, and the government fees that come with it.</p>
+<p class="updated">Updated 26 November 2026. Rates and fees checked against qld.gov.au.</p>
 
 <div class="calc-card">
 <form class="calc" id="duty">
-  <label>Dutiable value <small>new: list price plus options; used: price paid or market value, if higher</small>
-    <input type="number" name="value" value="45000" min="0" step="100" inputmode="numeric">
+  <div class="wide seg" role="radiogroup" aria-label="New or used">
+    <label><input type="radio" name="age" value="new" checked> New car</label>
+    <label><input type="radio" name="age" value="used"> Used car</label>
+  </div>
+  <label data-show="new">List price <small>manufacturer's list price incl. GST and luxury car tax, before any discount</small>
+    <input type="number" name="listPrice" value="45000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label data-show="new">Optional extras <small>factory or dealer options bought with the car</small>
+    <input type="number" name="options" value="0" min="0" step="100" inputmode="numeric">
+  </label>
+  <label data-show="used">Total you paid <small>incl. deposit, trade-in allowance, dealer delivery, warranties</small>
+    <input type="number" name="paid" value="25000" min="0" step="100" inputmode="numeric">
+  </label>
+  <label data-show="used">Market value <small>what it would sell for; leave 0 if you paid a fair price</small>
+    <input type="number" name="market" value="0" min="0" step="100" inputmode="numeric">
   </label>
   <label>Engine
     <select name="engine">
-      <option value="ev">Hybrid or electric (any)</option>
-      <option value="c4" selected>1 to 4 cylinders, 2 rotors or steam</option>
-      <option value="c6">5 or 6 cylinders, or 3 rotors</option>
-      <option value="c8">7 or more cylinders</option>
+      <option value="ev:c3">Electric</option>
+      <option value="ev:c3h">Hybrid, 1 to 3 cylinders</option>
+      <option value="ev:c4">Hybrid, 4 cylinders (incl. plug-in)</option>
+      <option value="ev:c6">Hybrid, 5 or 6 cylinders</option>
+      <option value="ev:c8">Hybrid, 7 or 8 cylinders</option>
+      <option value="c4:c3">Petrol or diesel, 1 to 3 cylinders</option>
+      <option value="c4:c4" selected>Petrol or diesel, 4 cylinders</option>
+      <option value="c6:c6">Petrol or diesel, 5 or 6 cylinders</option>
+      <option value="c8:c8">Petrol or diesel, 7 or 8 cylinders</option>
+      <option value="c8:c12">Petrol or diesel, 9 to 12 cylinders</option>
     </select>
   </label>
+  <label>Vehicle class
+    <select name="cls">
+      <option value="light" selected>Light: car, 4WD, ute, motorbike (up to 4.5 t GVM)</option>
+      <option value="heavy">Heavy: over 4.5 t GVM</option>
+      <option value="special">Special: forklift, tractor, grader</option>
+    </select>
+  </label>
+  <details class="wide"><summary>Modified for a person with a disability?</summary>
+    <label>Cost of the modifications <small>taken off the dutiable value</small>
+      <input type="number" name="mods" value="0" min="0" step="100" inputmode="numeric">
+    </label>
+  </details>
 </form>
 <div class="result" id="duty-out" aria-live="polite"></div>
-<p class="note">For light vehicles: cars, 4WDs, utes and motorbikes up to 4.5 tonnes gross vehicle mass.</p>
 </div>
 {{ad}}
 
@@ -25,14 +56,40 @@
 <div class="table-wrap"><table class="ex">
 <thead><tr><th>Engine</th><th>Up to $100,000</th><th>More than $100,000</th></tr></thead>
 <tbody>
-<tr><td>Hybrid (any cylinders) or electric</td><td>$2 per $100</td><td>$4 per $100</td></tr>
+<tr><td>Hybrid (any number of cylinders) or electric</td><td>$2 per $100</td><td>$4 per $100</td></tr>
 <tr><td>1 to 4 cylinders, 2 rotors, steam</td><td>$3 per $100</td><td>$5 per $100</td></tr>
 <tr><td>5 or 6 cylinders, 3 rotors</td><td>$3.50 per $100</td><td>$5.50 per $100</td></tr>
 <tr><td>7 or more cylinders</td><td>$4 per $100</td><td>$6 per $100</td></tr>
 </tbody></table></div>
-<p>Each rate is per $100 or part of $100, and it applies to the <strong>whole</strong> value. Once a car is worth more than $100,000 the higher rate covers every dollar, not only the part above $100,000. Queensland's own estimator agrees: a $110,050 four-cylinder car is charged 1,101 × $5 = $5,505.</p>
+<p>Light vehicles are cars, 4WDs, utes, vans and motorbikes up to 4.5 tonnes gross vehicle mass. Heavier vehicles pay the "up to $100,000" rate at any price. Special vehicles such as forklifts, tractors and graders pay a flat $25.</p>
 
-<h2>Worked examples</h2>
+<h2>How the duty is worked out, step by step</h2>
+<ol>
+<li><strong>Find the dutiable value</strong> (next section). For a new car that is the list price plus options, not the price you negotiated.</li>
+<li><strong>Count the $100s, rounding up.</strong> Duty is charged "per $100 or part of $100", so $45,050 counts as 451 lots of $100, not 450.</li>
+<li><strong>Pick the rate</strong> from the engine type and whether the value is over $100,000.</li>
+<li><strong>Multiply.</strong> 451 × $3 = $1,353 for a $45,050 four-cylinder car.</li>
+</ol>
+<p>The rate applies to the <strong>whole</strong> value. Once a car is worth more than $100,000, the higher rate covers every dollar, not only the part above $100,000. Queensland's own estimator agrees: a $110,050 four-cylinder car is charged 1,101 × $5 = $5,505.</p>
+
+<h2>Dutiable value: what the duty is charged on</h2>
+<ul>
+<li><strong>New car:</strong> the list price, meaning the manufacturer's recommended retail price including GST and luxury car tax, plus any optional equipment. A discount you negotiate does not lower it.</li>
+<li><strong>Used car, or a new car with no list price:</strong> the higher of the total you paid and the car's market value. The total paid counts any deposit, trade-in allowance, dealer delivery, warranties and options.</li>
+<li><strong>Repaired write-offs and imported cars:</strong> the market value when the car is registered, so repairs done before registration raise the duty.</li>
+<li><strong>Modified for a person with a disability:</strong> the cost of the modifications comes off the value.</li>
+</ul>
+<h3>Dutiable value examples</h3>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Situation</th><th>Dutiable value</th><th class="n">Duty (4 cyl)</th></tr></thead>
+<tbody>
+<tr><td>New car listed at $60,000, bought for $56,000 after a discount, with $2,500 of options</td><td>$60,000 + $2,500 = $62,500</td><td class="n">$1,875</td></tr>
+<tr><td>Used car, private sale: paid $18,000, market value $22,000</td><td>the higher, $22,000</td><td class="n">$660</td></tr>
+<tr><td>Used car from a dealer: $20,000 cash plus a trade-in valued at $10,000</td><td>$20,000 + $10,000 = $30,000</td><td class="n">$900</td></tr>
+<tr><td>Used car bought for $45,050</td><td>$45,050, counted as 451 lots of $100</td><td class="n">$1,353</td></tr>
+</tbody></table></div>
+
+<h2>Worked examples by engine and price</h2>
 <div class="table-wrap"><table class="ex">
 <thead><tr><th>Car</th><th>Working</th><th class="n">Duty</th></tr></thead>
 <tbody>
@@ -43,36 +100,127 @@
 <tr><td>$100,000 EV</td><td>1,000 × $2</td><td class="n">$2,000</td></tr>
 <tr><td>$100,100 EV</td><td>1,001 × $4</td><td class="n">$4,004</td></tr>
 </tbody></table></div>
-<p>The last two rows show the $100,000 cliff: $100 more on the list price doubles the duty, adding $2,004. Choosing a hybrid over the same-priced four-cylinder saves a third of the duty, $450 on a $45,000 car.</p>
 
-<h2>What value is the duty charged on?</h2>
-<ul>
-<li><strong>New car:</strong> the list price, meaning the manufacturer's recommended retail price including GST and luxury car tax, plus whatever you paid for optional equipment. A discount you negotiate does not lower it. Buy a car listed at $60,000 for $56,000 and you still pay duty on $60,000.</li>
-<li><strong>Used car, or a new car with no list price:</strong> the higher of the total you paid (counting any deposit, trade-in allowance, dealer delivery, warranties and options) and the market value. A cheap sale between family members is charged on market value.</li>
-<li><strong>Repaired or imported cars:</strong> the market value when registered, so repairs made before registration raise the duty.</li>
-<li><strong>Modified for a person with a disability:</strong> the cost of the modification is taken off the value.</li>
-</ul>
+<h2>The $100,000 line</h2>
+<p>Because the higher rate covers the whole price, crossing $100,000 by a single dollar roughly doubles the duty on a hybrid or EV and lifts it by two thirds on a four-cylinder car:</p>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Engine</th><th class="n">At $100,000</th><th class="n">At $100,100</th><th class="n">Extra duty</th></tr></thead>
+<tbody>
+<tr><td>Hybrid or electric</td><td class="n">$2,000</td><td class="n">$4,004</td><td class="n">$2,004</td></tr>
+<tr><td>1 to 4 cylinders</td><td class="n">$3,000</td><td class="n">$5,005</td><td class="n">$2,005</td></tr>
+<tr><td>5 or 6 cylinders</td><td class="n">$3,500</td><td class="n">$5,505.50</td><td class="n">$2,005.50</td></tr>
+<tr><td>7 or more cylinders</td><td class="n">$4,000</td><td class="n">$6,006</td><td class="n">$2,006</td></tr>
+</tbody></table></div>
+<p>If a car lists just over $100,000, dropping a dealer-fitted option can bring the dutiable value under the line and save about $2,000. A discount on the price will not, because a new car's duty is based on its list price.</p>
 
 <h2>Hybrids and electric cars</h2>
-<p>Queensland is one of the few states where a hybrid pays less duty than a petrol car. Any hybrid, whatever its cylinder count, and any fully electric car pays the 2% rate up to $100,000 and 4% above. That makes a $45,000 hybrid $450 cheaper to register than a four-cylinder petrol car at the same price.</p>
+<p>Queensland is one of the few states where a hybrid pays less duty than a petrol car. Any hybrid, whatever its cylinder count and including plug-in hybrids, and any fully electric car pays $2 per $100 up to $100,000 and $4 above. A $45,000 hybrid pays $900, which is $450 less than a four-cylinder petrol car at the same price.</p>
+
+<h2>Rego, CTP and other fees on top (2026–27)</h2>
+<p>Duty is a one-off. Registration is paid every year and is made up of the registration fee, the traffic improvement fee and compulsory third party (CTP) insurance. For a private car up to 4 tonnes, 12 months:</p>
+<div class="table-wrap"><table class="ex">
+<thead><tr><th>Engine</th><th class="n">Registration</th><th class="n">Traffic improvement</th><th class="n">CTP</th><th class="n">Total</th></tr></thead>
+<tbody>
+<tr><td>1 to 3 cylinders, or electric</td><td class="n">$303.10</td><td class="n">$67.25</td><td class="n">$411.80–$427.80</td><td class="n">$782.15–$798.15</td></tr>
+<tr><td>4 cylinders</td><td class="n">$385.45</td><td class="n">$67.25</td><td class="n">$411.80–$427.80</td><td class="n">$864.50–$880.50</td></tr>
+<tr><td>5 or 6 cylinders</td><td class="n">$610.30</td><td class="n">$67.25</td><td class="n">$411.80–$427.80</td><td class="n">$1,089.35–$1,105.35</td></tr>
+<tr><td>7 or 8 cylinders</td><td class="n">$854.70</td><td class="n">$67.25</td><td class="n">$411.80–$427.80</td><td class="n">$1,333.75–$1,349.75</td></tr>
+<tr><td>9 to 12 cylinders</td><td class="n">$1,002.35</td><td class="n">$67.25</td><td class="n">$411.80–$427.80</td><td class="n">$1,481.40–$1,497.40</td></tr>
+</tbody></table></div>
+<p>Hybrids are registered by their cylinder count, so they get the duty discount but not a cheaper rego. CTP depends on your insurer, which is why it is a range. A used car usually comes with the seller's remaining rego, so the buyer pays the $33.65 transfer fee instead. A newly registered car also needs number plates, $36.25. Our <a href="/qld-rego-calculator/">QLD rego calculator</a> covers concession rates, and the <a href="/driveaway-price-calculator/">drive-away price calculator</a> adds dealer delivery to show the full price of a new car.</p>
+<p>Putting it together for a new $45,000 four-cylinder car: $1,350 duty + $385.45 registration + $67.25 traffic improvement fee + $36.25 plates + $411.80 to $427.80 CTP = <strong>$2,250.75 to $2,266.75</strong> in government costs. The same car as a hybrid comes to $1,800.75 to $1,816.75.</p>
+
+<h2>When and how you pay</h2>
+<ul>
+<li><strong>New car from a dealer:</strong> the dealer normally registers the car for you, and the duty, rego and CTP are part of the drive-away price.</li>
+<li><strong>Private sale:</strong> the buyer transfers the registration and pays the duty. You must do it within 14 days of buying or receiving the car, and the seller must give you a current safety certificate (unless the vehicle is exempt).</li>
+<li><strong>Duty on a private sale</strong> is worked out on the higher of the sale price (including GST if any) and the market value. Selling to a stranger for a token price does not cut the duty.</li>
+<li><strong>Disagree with the assessment?</strong> You can lodge an objection within 60 days of paying.</li>
+</ul>
+
+<h2>Moving to Queensland with your car</h2>
+<p>A car registered in another state that will be kept at a Queensland address must be registered in Queensland within 14 days, and you can be fined if it is not. You do not pay duty again if it was paid when the car was registered interstate. You will need to show the interstate duty was paid.</p>
+
+<h2>Who does not pay duty</h2>
+<p>You may be able to claim an exemption if you:</p>
+<ul>
+<li>receive the car as a gift from a family member: a spouse (including de facto), parent, grandparent, child, stepchild or grandchild. Gifts between siblings, aunts, uncles or in-laws do not count.</li>
+<li>receive the car from a deceased estate</li>
+<li>are re-registering a car you or a relative previously registered in Queensland, or one already registered interstate with duty paid</li>
+<li>are an ex-service person, have lost the use of either leg, or need a motorised wheelchair</li>
+<li>are a dealer, a charity, a primary producer, part of a small business restructure, or transferring the car in a matrimonial matter</li>
+</ul>
+<p>There is no duty discount for seniors or pensioner card holders, but they pay less registration (see the <a href="/qld-rego-calculator/">QLD rego calculator</a>). Each exemption has conditions: check the Queensland Government's <a href="https://www.qld.gov.au/transport/registration/costs/duty/rebates">exemptions page</a> before you rely on one.</p>
+
+<h2>Common questions</h2>
+<details><summary>How much is stamp duty on a $50,000 car in Queensland?</summary>
+<p>$1,500 for a petrol or diesel car with up to 4 cylinders (500 × $3), $1,750 for 5 or 6 cylinders, $2,000 for 7 or more, and $1,000 for a hybrid or electric car.</p></details>
+<details><summary>Do I pay stamp duty on a used car in Queensland?</summary>
+<p>Yes. Every time registration moves to a new owner, the buyer pays duty on the higher of the price paid and the market value, unless an exemption applies.</p></details>
+<details><summary>Is the duty charged on the price I negotiated?</summary>
+<p>Not for a new car with a list price: the duty is on the list price plus options. For a used car, it is on what you paid or the market value, whichever is higher.</p></details>
+<details><summary>Are electric cars exempt from stamp duty in Queensland?</summary>
+<p>No, but they pay the lowest rate: $2 per $100 up to $100,000 and $4 per $100 above.</p></details>
+<details><summary>Does the higher rate over $100,000 apply only to the amount above $100,000?</summary>
+<p>No. It applies to the whole value, which is why a $100,100 EV pays $4,004 while a $100,000 EV pays $2,000.</p></details>
+<details><summary>Which calculator does Queensland use: TMR, QRO or OSR?</summary>
+<p>The official duty estimator is on qld.gov.au, and duty is administered by the Queensland Revenue Office (many people still search for it as "OSR"). This page uses the same rates and rounding, and also shows the working.</p></details>
+<details><summary>Do I pay duty on a caravan, trailer or boat?</summary>
+<p>No. Vehicle registration duty does not apply to caravans, trailers or boats.</p></details>
 
 <h2>What this leaves out</h2>
 <ul>
-<li>Registration fees and CTP insurance, which are separate.</li>
-<li>Exemptions for family transfers, dealers, businesses and charities, and the motorised-wheelchair exemption.</li>
-<li>Heavy vehicles over 4.5 tonnes, which pay the lower rate at every value, and conditionally registered machines such as forklifts and tractors ($25).</li>
-<li>Contracts signed before 1 July 2018, which use the older rates.</li>
-<li>Caravans, trailers and boats, which pay no vehicle registration duty.</li>
+<li>Contracts signed before 1 July 2018, which use older rates.</li>
+<li>Business and fleet arrangements, and duty credits when a business restructures.</li>
+<li>Dealer charges such as delivery and pre-delivery fees: see the <a href="/driveaway-price-calculator/">drive-away price calculator</a>.</li>
+<li>Exact CTP from your insurer; the range above covers all Class 1 insurers.</li>
 </ul>
 
 <h2>Other states</h2>
 <p>Duty is paid where the car is registered. <a href="/car-stamp-duty/">Compare all states</a> or pick one:</p>
 {{duty_states}}
 
-<p class="sources">Sources: Queensland Government, <a href="https://www.qld.gov.au/transport/registration/costs/duty/rates">Vehicle registration duty rates</a> (reviewed 14 August 2026), <a href="https://www.qld.gov.au/transport/registration/costs/duty/about">About vehicle registration duty</a> and its duty estimator. Checked 21 November 2026.</p>
+<p class="sources">Sources: Queensland Government, <a href="https://www.qld.gov.au/transport/registration/costs/duty/rates">vehicle registration duty rates</a>, <a href="https://www.qld.gov.au/transport/registration/costs/duty/about">about vehicle registration duty</a> and its duty estimator, <a href="https://www.qld.gov.au/transport/registration/costs/duty/rebates">exemptions</a> (updated 24 November 2026), <a href="https://www.qld.gov.au/transport/registration/costs/fees">registration fees</a> (updated 18 November 2026, costs as at 1 October 2026), <a href="https://www.qld.gov.au/transport/registration/transfer/buyer-transfer">transfer registration as a buyer</a> (updated 6 November 2026) and <a href="https://www.qld.gov.au/transport/registration/transfer/interstate">moving a vehicle to Queensland</a>. Checked 26 November 2026.</p>
 
 <script>
-Calc.ui("duty", function (v) {
-  return Calc.dutyResult("QLD", v.value, { engine: v.engine });
+Calc.ui("duty", function (v, form) {
+  var isNew = v.age !== "used";
+  Calc.showFor(form, isNew ? "new" : "used");
+  var parts = v.engine.split(":"), engine = parts[0], cyl = parts[1] === "c3h" ? "c3" : parts[1];
+  var n = function (x) { return isFinite(x) ? x : 0; };
+  var value = Calc.qldDutiableValue({ isNew: isNew, listPrice: n(v.listPrice), options: n(v.options),
+    paid: n(v.paid), market: n(v.market), disabilityMods: n(v.mods) });
+  var r = Calc.qldDuty(value, { engine: engine, cls: v.cls });
+  var m = Calc.fmt.money, m0 = Calc.fmt.money0;
+  var basis = isNew
+    ? (n(v.options) ? m0(n(v.listPrice)) + " list + " + m0(n(v.options)) + " options" : "list price")
+    : (n(v.market) > n(v.paid) ? "market value, higher than the price paid" : "total paid");
+  if (n(v.mods)) basis += ", less " + m0(n(v.mods)) + " modifications";
+  var rows = [["Dutiable value", m0(value) + " (" + basis + ")"], ["Stamp duty", m(r.duty), true]];
+  if (v.cls !== "special") {
+    rows.push(["Working", Calc.fmt.num(r.hundreds) + " lots of $100 × $" + r.rate.toFixed(2)]);
+    rows.push(["Share of the value", Calc.fmt.pct(value ? r.duty / value : 0, 2)]);
+  }
+  var html = Calc.table(rows), note = "";
+  if (v.cls === "light" && value > 90000 && value <= 100000)
+    note = "You are " + m0(100000 - value) + " under the $100,000 line. At $100,100 this car would pay " + m(r.justOver) + " because the higher rate covers the whole price.";
+  else if (v.cls === "light" && r.high)
+    note = "Over $100,000 the higher rate covers the whole price. At $100,000 this car would pay " + m(r.atLine) + ".";
+  if (note) html += '<p class="callout">' + note + "</p>";
+  if (v.cls !== "light") {
+    html += '<p class="note">Registration for heavy and special vehicles is charged differently; the fees below the calculator are for cars.</p>';
+  } else if (isNew) {
+    var g = Calc.qldRego(cyl, "");
+    var plates = Calc.REGO.qld.plates;
+    html += "<h3>Government costs for 12 months on the road</h3>" + Calc.table([
+      ["Registration fee", m(g.rego)], ["Traffic improvement fee", m(g.tif)],
+      ["CTP insurance", m(g.ctpLow) + " – " + m(g.ctpHigh)], ["Number plates", m(plates)],
+      ["Total with duty", m(r.duty + g.low + plates) + " – " + m(r.duty + g.high + plates), true]]);
+  } else {
+    var t = Calc.REGO.qld.transfer;
+    html += "<h3>Paid when you transfer</h3>" + Calc.table([["Transfer fee", m(t)],
+      ["Total with duty", m(r.duty + t), true]]) + '<p class="note">The seller’s remaining registration usually carries over until it expires.</p>';
+  }
+  return html;
 });
 </script>

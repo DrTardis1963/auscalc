@@ -197,5 +197,60 @@ for (const s in hub) {
   eq(`hub ${s} used 20k`, d(s, 20000, s === "ACT" ? { isNew: false } : po), u20);
 }
 
+// QLD page: dutiable value, working and the $100,000 line
+const qv = C.qldDutiableValue, qd = (v, e, cls) => C.qldDuty(v, { engine: e, cls }).duty;
+eq("qld dv new list+options", qv({ isNew: true, listPrice: 60000, options: 2500 }), 62500);
+eq("qld dv new discount ignored", qd(qv({ isNew: true, listPrice: 60000, options: 2500 }), "c4"), 1875);
+eq("qld dv used market higher", qv({ isNew: false, paid: 18000, market: 22000 }), 22000);
+eq("qld dv used market duty", qd(22000, "c4"), 660);
+eq("qld dv trade-in", qd(qv({ isNew: false, paid: 30000 }), "c4"), 900);
+eq("qld part-100 rounding", qd(45050, "c4"), 1353);
+eq("qld hundreds 45050", C.qldDuty(45050, { engine: "c4" }).hundreds, 451);
+eq("qld disability mods", qv({ isNew: true, listPrice: 50000, disabilityMods: 8000 }), 42000);
+eq("qld 50k c4", qd(50000, "c4"), 1500);
+eq("qld 50k c6", qd(50000, "c6"), 1750);
+eq("qld 50k c8", qd(50000, "c8"), 2000);
+eq("qld 50k ev", qd(50000, "ev"), 1000);
+for (const [e, at, over] of [["ev", 2000, 4004], ["c4", 3000, 5005], ["c6", 3500, 5505.5], ["c8", 4000, 6006]]) {
+  eq(`qld line ${e} 100k`, qd(100000, e), at);
+  eq(`qld line ${e} 100.1k`, qd(100100, e), over);
+  eq(`qld line ${e} justOver`, C.qldDuty(95000, { engine: e }).justOver, over);
+  eq(`qld line ${e} atLine`, C.qldDuty(120000, { engine: e }).atLine, at);
+}
+eq("qld heavy 150k stays low rate", qd(150000, "c4", "heavy"), 4500);
+eq("qld special flat", qd(80000, "c4", "special"), 25);
+// QLD rego: our sums must equal the official totals (qld.gov.au, as at 1 Oct 2026)
+const qr = C.qldRego;
+for (const [c, lo, hi] of [["c3", 782.15, 798.15], ["c4", 864.50, 880.50], ["c6", 1089.35, 1105.35], ["c8", 1333.75, 1349.75], ["c12", 1481.40, 1497.40]]) {
+  eq(`qld rego ${c} low`, qr(c, "").low, lo); eq(`qld rego ${c} high`, qr(c, "").high, hi);
+}
+for (const [c, lo, hi] of [["c3", 630.60, 646.60], ["c4", 671.80, 687.80], ["c6", 784.20, 800.20], ["c8", 906.40, 922.40], ["c12", 980.25, 996.25]]) {
+  eq(`qld conc ${c} low`, qr(c, "card").low, lo); eq(`qld conc ${c} high`, qr(c, "card").high, hi);
+}
+eq("qld pre-1994 low", qr("c8", "pre1994").low, 587.65);
+eq("qld pre-1994 high", qr("c4", "pre1994").high, 603.65);
+eq("qld rego 6 vs 4", qr("c6", "").rego - qr("c4", "").rego, 224.85);
+eq("qld rego 8 vs 4", qr("c8", "").rego - qr("c4", "").rego, 469.25);
+eq("qld rego EV dearest", qr("c3", "").high, 798.15);
+eq("qld rego V8 seniors", qr("c8", "card").low, 906.40);
+eq("qld new 4cyl + plates", qr("c4", "").low + C.REGO.qld.plates, 900.75);
+// QLD page: government costs on a new $45,000 car
+eq("qld gov 45k c4 low", qd(45000, "c4") + qr("c4", "").low + C.REGO.qld.plates, 2250.75);
+eq("qld gov 45k c4 high", qd(45000, "c4") + qr("c4", "").high + C.REGO.qld.plates, 2266.75);
+eq("qld gov 45k hybrid low", qd(45000, "ev") + qr("c4", "").low + C.REGO.qld.plates, 1800.75);
+eq("qld gov 45k hybrid high", qd(45000, "ev") + qr("c4", "").high + C.REGO.qld.plates, 1816.75);
+// Drive-away page examples: $45,000 car, $2,000 dealer delivery
+const da = (state, dutyOpts, rego) => C.driveaway({ state, price: 45000, delivery: 2000, dutyOpts, rego });
+eq("da qld c4", da("QLD", { engine: "c4" }, 900.75).total, 49250.75);
+eq("da qld hybrid", da("QLD", { engine: "ev" }, 900.75).total, 48800.75);
+eq("da sa metro c4 duty", da("SA", { type: "passenger" }, 705).duty, 1740);
+eq("da sa metro c4", da("SA", { type: "passenger" }, C.REGO.sa.metro.c4).total, 49445);
+eq("da vic ev duty", da("VIC", { type: "green" }, 0).duty, 1890);
+eq("da vic ev metro", da("VIC", { type: "green" }, C.REGO.vic.metro).total, 49848.80);
+eq("da gov qld", 1350 + 900.75, 2250.75);
+eq("da gov sa", 1740 + 705, 2445);
+eq("da gov vic", 1890 + 958.80, 2848.80);
+eq("da duty on delivery", C.driveaway({ state: "QLD", price: 45000, delivery: 2000, dutyOnDelivery: true, dutyOpts: { engine: "c4" } }).dutiable, 47000);
+
 if (fails) { console.log(`${fails} check(s) failed`); process.exit(1); }
 console.log("All formula checks passed");
