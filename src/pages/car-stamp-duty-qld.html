@@ -212,13 +212,13 @@ Calc.ui("duty", function (v, form) {
   } else if (isNew) {
     var g = Calc.qldRego(cyl, "");
     var plates = Calc.REGO.qld.plates;
-    html += "<h3>Government costs for 12 months on the road</h3>" + Calc.table([
+    html += '<h2 class="in-card">Government costs for 12 months on the road</h2>' + Calc.table([
       ["Registration fee", m(g.rego)], ["Traffic improvement fee", m(g.tif)],
       ["CTP insurance", m(g.ctpLow) + " – " + m(g.ctpHigh)], ["Number plates", m(plates)],
       ["Total with duty", m(r.duty + g.low + plates) + " – " + m(r.duty + g.high + plates), true]]);
   } else {
     var t = Calc.REGO.qld.transfer;
-    html += "<h3>Paid when you transfer</h3>" + Calc.table([["Transfer fee", m(t)],
+    html += '<h2 class="in-card">Paid when you transfer</h2>' + Calc.table([["Transfer fee", m(t)],
       ["Total with duty", m(r.duty + t), true]]) + '<p class="note">The seller’s remaining registration usually carries over until it expires.</p>';
   }
   return html;
