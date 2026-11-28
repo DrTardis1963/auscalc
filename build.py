@@ -150,7 +150,9 @@ def build():
         if crumb_data:
             data.append(crumb_data)
         jsonld = "".join('<script type="application/ld+json">' + json.dumps(d) + "</script>" for d in data)
-        body = (p["body"].replace("{{calc_list}}", grid)
+        # data-nosnippet keeps Google from quoting a calculator's live result box in search snippets.
+        body = (p["body"].replace('<div class="calc-card">', '<div class="calc-card" data-nosnippet>')
+                .replace("{{calc_list}}", grid)
                 .replace("{{duty_states}}", duty_states)
                 .replace("{{ad}}", ad_slot(site))
                 .replace("{{contact}}", site["contact"])
